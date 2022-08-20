@@ -1,0 +1,11 @@
+{% extends "terminimal/templates/index.html" %}
+
+{% block footer %}
+<footer class="footer">
+    <div class="footer__inner">
+        <div class="copyright">
+            <span>© {{ date_macros::now_year() }} {{ config.extra.author }}</span>
+        </div>
+    </div>
+</footer>
+{% endblock footer %}

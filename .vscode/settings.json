@@ -1,0 +1,19 @@
+{
+    "cSpell.words": [
+        "CNAME",
+        "mkdir",
+        "numtide",
+        "pname",
+        "stikic"
+    ],
+    "files.exclude": {
+        "**/public": true,
+        "**/themes": true,
+    },
+    "Lua.workspace.library": [
+        "/Applications/Hammerspoon.app/Contents/Resources"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global"
+    ],
+}

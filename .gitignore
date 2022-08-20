@@ -1,0 +1,8 @@
+# direnv
+/.direnv
+# nix
+/result
+# zola
+/public
+/static/processed_images
+/themes
