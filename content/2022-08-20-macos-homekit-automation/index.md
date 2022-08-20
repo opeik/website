@@ -1,5 +1,5 @@
 +++
-title = "macOS HomeKit automation with Hammerspoon"
+title = "macOS HomeKit automation"
 
 [taxonomies]
 tags = ["macos", "homekit", "automation", "hammerspoon"]
