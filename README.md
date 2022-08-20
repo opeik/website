@@ -5,7 +5,7 @@
 Dependencies:
 
 - [nix](https://nixos.org/download.html#nix-quick-install)
-- [nix-direnv](https://github.com/nix-community/nix-direnv)
+- [direnv](https://direnv.net/)
 
 ```
 git clone git@github.com:opeik/website.git && cd website
