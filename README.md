@@ -1,4 +1,4 @@
-# stikic.com
+# Website
 
 ## Development
 
