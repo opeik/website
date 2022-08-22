@@ -11,6 +11,8 @@ taxonomies = [{ name = "tags" }]
 highlight_code = true
 
 [extra]
+# Theme settings
+source_url = "https://github.com/opeik/website"
 accent_color = "red"
 background_color = "red"
 logo_text = "Sandro Stikić"

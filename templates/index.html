@@ -4,7 +4,8 @@
 <footer class="footer">
     <div class="footer__inner">
         <div class="copyright">
-            <span>© {{ date_macros::now_year() }} {{ config.extra.author }}</span>
+            <span>© {{ date_macros::now_year() }} {{ config.extra.author }} :: <a
+                    href="{{ config.extra.source_url }}">source</a> </span>
         </div>
     </div>
 </footer>
