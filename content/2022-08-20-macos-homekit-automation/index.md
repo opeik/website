@@ -47,7 +47,7 @@ local watcher = hs.caffeinate.watcher
 local function power_callback(event)
     if event == watcher.systemDidWake then
         os.execute("shortcuts run 'Turn speakers on'")
-    elseif event == watcher.systemWillSleep or event == watcher.systemWillPowerOff then
+    elseif event == watcher.systemWillSleep then
         os.execute("shortcuts run 'Turn speakers off'")
     end
 end
