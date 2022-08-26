@@ -27,7 +27,7 @@
           name = "website";
           src = with pkgs; builtins.path {
             path = ./.;
-            name = "src";
+            name = "website-src";
             filter = path: type: (x:
               builtins.any (file: lib.hasSuffix file x) [ "config.toml" ] ||
               builtins.any (dir: lib.hasInfix dir x) [ "content" "static" "templates" ]
