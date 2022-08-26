@@ -13,8 +13,8 @@ highlight_code = true
 [extra]
 # Theme settings
 source_url = "https://github.com/opeik/website"
-accent_color = "red"
-background_color = "red"
+accent_color = "pink"
+background_color = "pink"
 logo_text = "Sandro Stikić"
 author = "Sandro Stikić"
 favicon = "/favicon.png"

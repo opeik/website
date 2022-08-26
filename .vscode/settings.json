@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Cachix",
         "CNAME",
         "mkdir",
         "numtide",
@@ -8,12 +9,9 @@
     ],
     "files.exclude": {
         "**/public": true,
-        "**/themes": true,
     },
-    "Lua.workspace.library": [
-        "/Applications/Hammerspoon.app/Contents/Resources"
-    ],
-    "Lua.diagnostics.disable": [
-        "undefined-global"
-    ],
+    "explorer.fileNesting.patterns": {
+        "flake.nix": "flake.lock",
+        "README.md": "LICENSE.md",
+    }
 }

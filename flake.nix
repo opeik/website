@@ -9,23 +9,32 @@
     utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        theme = builtins.fetchGit {
-          url = "https://github.com/pawroman/zola-theme-terminimal.git";
-          rev = "0cc423545a63a9bd6ea6fc66068d03625d574876";
-          ref = "master";
+        theme = pkgs.stdenv.mkDerivation {
+          name = "zola-theme-terminimal";
+          src = builtins.fetchGit {
+            url = "https://github.com/pawroman/zola-theme-terminimal.git";
+            rev = "0cc423545a63a9bd6ea6fc66068d03625d574876";
+            ref = "master";
+          };
+          patchPhase = "substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'";
+          installPhase = "cp -R . $out";
         };
         themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
       in
       {
         # `nix build`
         defaultPackage = pkgs.stdenv.mkDerivation {
-          pname = "website";
-          version = "0.1.0";
-          src = ./.;
-          buildInputs = [ pkgs.zola ];
-          configurePhase = ''
-            mkdir --parents themes && ln --symbolic ${theme} themes/terminimal
-          '';
+          name = "website";
+          src = with pkgs; builtins.path {
+            path = ./.;
+            name = "src";
+            filter = path: type: (x:
+              builtins.any (file: lib.hasSuffix file x) [ "config.toml" ] ||
+              builtins.any (dir: lib.hasInfix dir x) [ "content" "static" "templates" ]
+            ) path;
+          };
+          buildInputs = with pkgs; [ zola ];
+          configurePhase = "mkdir --parents themes && ln --symbolic ${theme} themes/${themeName}";
           buildPhase = "zola build";
           installPhase = "cp --recursive public $out";
         };
@@ -34,7 +43,7 @@
         devShell = pkgs.mkShell ({
           buildInputs = [ pkgs.zola ];
           shellHook = ''
-            mkdir --parents themes && ln --symbolic --force --no-dereference ${theme} themes/terminimal
+            mkdir --parents themes && ln --symbolic --force --no-dereference ${theme} themes/${themeName}
           '';
         });
       });
