@@ -3,48 +3,57 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05"; # Nix package repository
     utils.url = "github:numtide/flake-utils"; # Flake utility functions
+    # Zola theme.
+    zola-theme = {
+      url = "github:pawroman/zola-theme-terminimal";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, utils }:
-    utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        theme = pkgs.stdenv.mkDerivation {
-          name = "zola-theme-terminimal";
-          src = builtins.fetchGit {
-            url = "https://github.com/pawroman/zola-theme-terminimal.git";
-            rev = "0cc423545a63a9bd6ea6fc66068d03625d574876";
-            ref = "master";
-          };
-          patchPhase = "substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'";
-          installPhase = "cp -R . $out";
-        };
-        themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
-      in
-      {
+  outputs = {
+    self,
+    nixpkgs,
+    utils,
+    zola-theme,
+  }:
+    utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      theme = pkgs.stdenv.mkDerivation {
+        name = "zola-theme-terminimal";
+        src = zola-theme;
+        patchPhase = "substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'";
+        installPhase = "cp -R . $out";
+      };
+      themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
+    in
+      with pkgs; {
         # `nix build`
-        defaultPackage = pkgs.stdenv.mkDerivation {
+        defaultPackage = stdenv.mkDerivation {
           name = "website";
-          src = with pkgs; builtins.path {
+          # Only include the zola relevant files to reduce frivolous rebuilds.
+          src = builtins.path {
             path = ./.;
             name = "website-src";
-            filter = path: type: (x:
-              builtins.any (file: lib.hasSuffix file x) [ "config.toml" ] ||
-              builtins.any (dir: lib.hasInfix dir x) [ "content" "static" "templates" ]
-            ) path;
+            filter = path: type:
+              (
+                x:
+                  builtins.any (file: lib.hasSuffix file x) ["config.toml"]
+                  || builtins.any (dir: lib.hasInfix dir x) ["content" "static" "templates"]
+              )
+              path;
           };
-          buildInputs = with pkgs; [ zola ];
+          buildInputs = [zola];
           configurePhase = "mkdir --parents themes && ln --symbolic ${theme} themes/${themeName}";
           buildPhase = "zola build";
           installPhase = "cp --recursive public $out";
         };
 
         # `nix develop`
-        devShell = pkgs.mkShell ({
-          buildInputs = [ pkgs.zola ];
+        devShell = mkShell {
+          buildInputs = [zola];
           shellHook = ''
             mkdir --parents themes && ln --symbolic --force --no-dereference ${theme} themes/${themeName}
           '';
-        });
+        };
       });
 }

@@ -17,11 +17,10 @@ concurrency:
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
@@ -39,7 +38,7 @@ jobs:
           name: website
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build
+      - name: Build website
         run: |
           nix build --print-build-logs
           cp --recursive --dereference --no-preserve=mode,ownership result public
@@ -47,11 +46,11 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v1
 
-      - name: Upload website
+      - name: Upload website content
         uses: actions/upload-pages-artifact@v1
         with:
           path: public
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v1

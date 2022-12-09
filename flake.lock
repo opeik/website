@@ -19,7 +19,8 @@
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "utils": "utils"
+        "utils": "utils",
+        "zola-theme": "zola-theme"
       }
     },
     "utils": {
@@ -34,6 +35,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "zola-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1668419108,
+        "narHash": "sha256-wui5XaOW4UdRzKY3ZThx5e7fiDld0BZPv+H28L1ydb0=",
+        "owner": "pawroman",
+        "repo": "zola-theme-terminimal",
+        "rev": "eb82877d3d8459a9fa2c295040fdb7fd28fc1ba3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pawroman",
+        "repo": "zola-theme-terminimal",
         "type": "github"
       }
     }
