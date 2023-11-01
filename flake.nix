@@ -1,7 +1,7 @@
 # Nix flake, see: <https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html>
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11"; # Nix package repository
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # Nix package repository
     utils.url = "github:numtide/flake-utils"; # Flake utility functions
     # Zola theme.
     zola-theme = {
