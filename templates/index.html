@@ -8,8 +8,11 @@
 <footer class="footer">
     <div class="footer__inner">
         <div class="copyright">
-            <span>© {{ date_macros::now_year() }} {{ config.extra.author }} :: <a
-                    href="{{ config.extra.source_url }}">source</a> </span>
+            <span>
+                © {{ date_macros::now_year() }} {{ config.extra.author }} ::
+                <a href="{{ config.extra.source_url }}">source</a> ::
+                <a href="{{ get_url(path='atom.xml', trailing_slash=false) }}">rss</a>
+            </span>
         </div>
     </div>
 </footer>

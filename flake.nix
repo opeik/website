@@ -42,9 +42,16 @@
               )
               path;
           };
-          buildInputs = [zola];
+          buildInputs = [zola nodePackages_latest.prettier];
           configurePhase = "mkdir --parents themes && ln --symbolic ${theme} themes/${themeName}";
-          buildPhase = "zola build";
+          buildPhase = ''
+            # Build
+            zola build
+            # Format
+            prettier --bracket-same-line true --write public
+            # Strip empty lines
+            find public -type f -name '*.html' -exec sed -i '/^$/d' {} +
+          '';
           installPhase = "cp --recursive public $out";
         };
 
