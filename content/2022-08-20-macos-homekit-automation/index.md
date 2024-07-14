@@ -2,7 +2,7 @@
 title = "macOS HomeKit automation"
 
 [taxonomies]
-tags = ["macos", "homekit", "automation", "hammerspoon"]
+tags = ["macos", "homekit", "automation", "hammerspoon", "lua"]
 +++
 
 ## The problem

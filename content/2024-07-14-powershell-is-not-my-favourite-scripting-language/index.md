@@ -2,7 +2,7 @@
 title = "Powershell is not my favourite scripting language"
 
 [taxonomies]
-tags = ["rant", "powershell"]
+tags = ["rant", "powershell", "posix", "shell"]
 +++
 
 I had half my weekend wasted by this inane scripting language, and I need a
