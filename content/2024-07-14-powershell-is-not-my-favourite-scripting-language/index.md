@@ -166,7 +166,7 @@ Here is the error:
      | Cannot assign automatic variable 'args' with type 'System.Object[]'
 ```
 
-If you think this is a good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this. <sup>[\[1\]]</sup>
+If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this. <sup>[\[1\]]</sup>
 
 My sanity is visibly and rapidly deteriorating; what's the problem this time‽ Well, you see, `$args` is a [reserved variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function. You can mutate also `$args`. Also, `$args` is of type `System.Object[]`, likely to support non-string argument types via type erasure.
 
