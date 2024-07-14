@@ -5,14 +5,14 @@ title = "Powershell is not my favourite scripting language"
 tags = ["rant", "powershell"]
 +++
 
-I just had half of my weekend wasted by this inane scripting language, and I need a
+I had half my weekend wasted by this inane scripting language, and I need a
 self-therapy session masquerading as a blog post.
 
 Before you discount this as the ravings of a UNIX fanboy, please understand that you couldn't
 be further from the truth. I sincerely tried to be fair and gave Powershell as much benefit of the
 doubt as I could muster.
 
-Disclaimers aside, let's begin my descent into madness.
+Disclaimers aside, let's begin the descent into madness.
 
 <!-- more -->
 
@@ -176,15 +176,15 @@ Why is `$args` in the global namespace? Why am I allowed to mutate it? Why does 
 
 Throughout my experience with Powershell, I kept asking the same questions. Why was this made?
 Why was this made this way? What was happening that created the circumstances that that led to this
-being made the way that it was made? [\[3\]]
+being made the way that it was made? [\[2\]]
 
 In the future, I'd rather deal with the hassle of installing [`nushell`](https://www.nushell.sh/) on
 every CI runner than put up with POSIX shell and Powershell, and I'd encourage you to do the same.
 
-Powershell is not my favourite scripting language.[\[2\]]
+Powershell is not my favourite scripting language.[\[3\]]
 
 ["worse is better"]: https://en.wikipedia.org/wiki/Worse_is_better
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
 [\[1\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
-[\[2\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
-[\[3\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
+[\[2\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
+[\[3\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
