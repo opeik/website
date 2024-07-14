@@ -11,6 +11,8 @@ My Mac mini is hooked up to a pair of Yamaha HS8s via a TASCAM 208i. The manual 
 turn the speakers off when not in use to prevent wear. Fishing for the power switch behind each
 speaker got annoying quickly, so I decided to automate the process.
 
+<!-- more -->
+
 ## The solution
 
 Since I can't control the speakers remotely, I opted to leave them on and control the
