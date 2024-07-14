@@ -175,7 +175,7 @@ Why is `$args` in the global namespace? Why am I allowed to mutate it? Why does 
 ## Why are we still here? Just to suffer?
 
 Throughout my experience with Powershell, I kept asking the same questions. Why was this made?
-Why was this made this way? What was happening that created the circumstances that that led to this
+Why was this made _this_ way? What was happening that created the circumstances that that led to this
 being made the way that it was made? [\[2\]]
 
 In the future, I'd rather deal with the hassle of installing [`nushell`](https://www.nushell.sh/) on
