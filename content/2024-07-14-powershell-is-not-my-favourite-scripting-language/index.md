@@ -77,7 +77,7 @@ The rest of the post details my first-time user experience with Powershell.
 
 Do you know what shell scripts frequently do? Run programs. They run other programs.
 
-To run programs a program in Powershell, you can either:
+To run programs in Powershell, you can either:
 
 1) run it [directly](https://learn.microsoft.com/en-us/powershell/scripting/learn/shell/running-commands?view=powershell-7.4#running-native-commands)
 2) use the [call operator](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7.4#call-operator-)
