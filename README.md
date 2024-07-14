@@ -9,5 +9,5 @@ Dependencies:
 
 ```
 git clone git@github.com:opeik/website.git && cd website
-zola serve --drafts
+nix run
 ```

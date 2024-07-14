@@ -25,42 +25,54 @@
         installPhase = "cp -R . $out";
       };
       themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
-    in
-      with pkgs; {
-        # `nix build`
-        defaultPackage = stdenv.mkDerivation {
-          name = "website";
-          # Only include the zola relevant files to reduce frivolous rebuilds.
-          src = builtins.path {
-            path = ./.;
-            name = "website-src";
-            filter = path: type:
-              (
-                x:
-                  builtins.any (file: lib.hasSuffix file x) ["config.toml"]
-                  || builtins.any (dir: lib.hasInfix dir x) ["content" "static" "templates"]
-              )
-              path;
-          };
-          buildInputs = [zola nodePackages_latest.prettier];
-          configurePhase = "mkdir --parents themes && ln --symbolic ${theme} themes/${themeName}";
-          buildPhase = ''
-            # Build
-            zola build
-            # Format
-            prettier --bracket-same-line true --write public
-            # Strip empty lines
-            find public -type f -name '*.html' -exec sed -i '/^$/d' {} +
-          '';
-          installPhase = "cp --recursive public $out";
+    in {
+      # `nix build`
+      defaultPackage = pkgs.stdenv.mkDerivation {
+        name = "website";
+        # Only include the zola relevant files to reduce frivolous rebuilds.
+        src = builtins.path {
+          path = ./.;
+          name = "website-src";
+          filter = path: type:
+            (
+              x:
+                builtins.any (file: pkgs.lib.hasSuffix file x) ["config.toml"]
+                || builtins.any (dir: pkgs.lib.hasInfix dir x) ["content" "static" "templates"]
+            )
+            path;
         };
+        buildInputs = with pkgs; [zola nodePackages_latest.prettier];
+        configurePhase = ''
+          mkdir --parents themes
+          ln --symbolic ${theme} themes/${themeName}
+        '';
+        buildPhase = ''
+          # Build
+          zola build
+          # Format
+          prettier --bracket-same-line true --write public
+          # Strip empty lines
+          find public -type f -name '*.html' -exec sed -i '/^$/d' {} +
+        '';
+        installPhase = "cp --recursive public $out";
+      };
 
-        # `nix develop`
-        devShell = mkShell {
-          buildInputs = [zola];
-          shellHook = ''
-            mkdir --parents themes && ln --symbolic --force --no-dereference ${theme} themes/${themeName}
-          '';
-        };
-      });
+      # `nix develop`
+      devShell = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          zola
+          self.formatter.${system}
+        ];
+        shellHook = ''
+          mkdir --parents themes
+          ln --symbolic --force --no-dereference ${theme} themes/${themeName}
+        '';
+      };
+
+      # `nix run`
+      packages.default = pkgs.writeShellScriptBin "serve" "${pkgs.zola}/bin/zola serve --drafts";
+
+      # `nix fmt`
+      formatter = pkgs.alejandra;
+    });
 }
