@@ -166,26 +166,29 @@ Here is the error:
      | Cannot assign automatic variable 'args' with type 'System.Object[]'
 ```
 
-If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this. <sup>[\[1\]]</sup>
+If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this.<sup>[\[1\]]</sup>
 
 My sanity is rapidly deteriorating—what's the problem this time‽ Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function.
 
 Why is `$args` in the global namespace? Why am I allowed to mutate it? Why does it use type erasure?
 Why is this error message so bad?
 
-## Why are we still here? Just to suffer?
+## Closing thoughts
 
-Throughout my experience with Powershell, I kept asking the same questions. Why was this made?
-Why was this made _this_ way? What was happening that created the circumstances that that led to this
-being made the way that it was made? [\[2\]]
+Throughout this ordeal, I kept asking the same question: why?
 
-In the future, I'd rather deal with the hassle of installing [`nushell`](https://www.nushell.sh/) on
-every CI runner than put up with POSIX shell and Powershell, and I'd encourage you to do the same.
+Why was this made? Why was this made _this_ way? What was happening that created the circumstances that that led to this
+being made the way that it was made?<sup>[\[2\]]</sup>
 
-Powershell is not my favourite scripting language.[\[3\]]
+In the future, I'd rather deal with the hassle of installing [`nushell`] on every CI runner
+than subject myself to the depraved machinations of POSIX shell and Powershell. I encourage you
+to do the same.
+
+Powershell is not my favourite scripting language.<sup>[\[3\]]</sup>
 
 ["worse is better"]: https://en.wikipedia.org/wiki/Worse_is_better
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
+[`nushell`]: https://www.nushell.sh/
 [\[1\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
 [\[2\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
 [\[3\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
