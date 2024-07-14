@@ -5,14 +5,14 @@ title = "Powershell is not my favourite scripting language"
 tags = ["rant", "powershell", "posix", "shell"]
 +++
 
-I had half my weekend wasted by this inane scripting language, and I need a
-self-therapy session masquerading as a blog post.
+Powershell wasted 10 hours of my life, so I was compelled to write this self-therapy session
+masquerading as a blog post.
 
 Before you discount this as the ravings of a UNIX fanboy, please understand that you couldn't
 be further from the truth. I sincerely tried to be fair and gave Powershell as much benefit of the
 doubt as I could muster.
 
-Disclaimers aside, let's begin the descent into madness.
+Disclaimer aside, let's begin the descent into madness.
 
 <!-- more -->
 
@@ -28,12 +28,13 @@ than it is to write a shell script, it has failed to serve its only purpose.
 ## The veritable mess that is POSIX
 
 POSIX shell is, like most things descending from UNIX, poorly designed and
-incredibly unpleasant to use. Once you've developed a mental model of how it works via abstract
-causality and pain, you can eventually kludge together scripts _relatively_ quickly. It has many warts, though, namely inconsistency, error-prone string handling, and its
+incredibly unpleasant to use. Granted, once you've developed a mental model of how it works (via
+abstract causality and pain), you learn _eventually_ how to kludge together scripts relatively quickly. It has many warts, though, namely: inconsistency, error-prone string handling, and its
 compulsion to violate the principle of least surprise.
 
 POSIX shell is a concrete example of ["worse is better"] in action. It's a glue used to create
-precarious and unholy obelisks comprised of disjoint software, many of which date back to the 70s.
+precarious and unholy obelisks comprised of disjoint software, the undying remnants of bygone relics
+5 decades past.
 
 There's barely _any_ language in there to speak of; most of the "syntax" is just _other_ programs.
 
