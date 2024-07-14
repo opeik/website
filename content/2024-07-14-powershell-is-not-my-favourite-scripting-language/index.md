@@ -36,22 +36,25 @@ POSIX shell is a concrete example of ["worse is better"] in action. It's a glue 
 precarious and unholy obelisks comprised of disjoint software, the undying remnants of bygone relics
 5 decades past.
 
-There's barely _any_ language in there to speak of; most of the "syntax" is just _other_ programs.
+There's barely _any_ language in there to speak of; most of the "syntax" is just _external_ programs.
 
-Control flow?
+Control flow? External program.
 
 ```
 ❯ which [
 /bin/[
 ```
 
-Constants?
+Constants? External program.
 ```
 ❯ which true
 /usr/bin/true
 ```
 
-Oh, it's another program.
+Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
+trying to wrangle any semblance of reliability from this cacophony of bad ideas. Unhandled errors
+don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
+Accessing undefined variables isn't even an error, it evaluates to an empty string.
 
 Furthermore, lacking a standard for structuring data means relying on ad-hoc conventions, such as
 `find`'s `-print0` parameter, which separates results by an ASCII `NUL` character. I hope
@@ -69,7 +72,7 @@ trying to comprehend it.
 
 This brings us to Powershell. In concept, I quite like Powershell. Equipped with several
 decades of hindsight, it seeks to be a shell scripting language that doesn't make you reconsider your
-life decisions.
+life choices.
 
 It is with regret, my dear reader, that I inform you Powershell is just as bad in a variety of new and exciting ways.
 The rest of the post details my first-time user experience with Powershell.
@@ -150,16 +153,14 @@ How do we solve this? Well, if you'd read the docs properly you _utter buffoon_,
 Start-Process ... -ArgumentList (,$args)
 ```
 
-> In this example, $args is wrapped in an array so that the entire array is passed to the script block as a single object.
-
-Fantastic, I have to force Powershell to stop coercing the string array into a string.
+> In this example, `$args` is wrapped in an array so that the entire array is passed to the script block as a single object.
 
 ### I have no args, and I must scream
 
-None of the examples in the previous section involving `$args` work, I lied.
-You see, I was simultaneously suffering through the two aforementioned and a third, secret issue!
+The examples in the previous section involving `$args` don't work, I lied.
+You see, I was simultaneously suffering through the two aforementioned issues and a third, secret issue!
 
-Here is the error:
+Here's the error:
 
 ```
   10 |  [string[]]$args =  @(
@@ -169,7 +170,7 @@ Here is the error:
 
 If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this.<sup>[\[1\]]</sup>
 
-My sanity is rapidly deteriorating—what's the problem this time‽ Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function.
+My sanity is rapidly deteriorating; what's the problem this time‽ Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function, obviously!
 
 Why is `$args` in the global namespace? Why am I allowed to mutate it? Why does it use type erasure?
 Why is this error message so bad?
@@ -182,8 +183,8 @@ Why was this made? Why was this made _this_ way? What was happening that created
 being made the way that it was made?<sup>[\[2\]]</sup>
 
 In the future, I'd rather deal with the hassle of installing [`nushell`] on every CI runner
-than subject myself to the depraved machinations of POSIX shell and Powershell. I encourage you
-to do the same.
+than continue to subject myself to the depraved machinations of POSIX shell and Powershell.
+I encourage you to do the same, we all deserve better.
 
 Powershell is not my favourite scripting language.<sup>[\[3\]]</sup>
 
