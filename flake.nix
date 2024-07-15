@@ -22,7 +22,9 @@
         name = "zola-theme-terminimal";
         src = zola-theme;
         patchPhase = ''
-          substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'
+          substituteInPlace sass/color/pink.scss \
+            --replace-fail '238,114,241' '171,158,239' \
+            --replace-fail 'white' '#fcfcfa'
           echo "@import 'mods';" >> sass/style.scss
           cp ${./styles/mods.scss} sass/mods.scss
         '';

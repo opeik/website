@@ -63,7 +63,7 @@ all ["utilities"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_
 may be ["built-in"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14),
 meaning the code is included in the shell, removing the need for the magic executables.
 
-{{ figure(path="environmental storytelling.png", caption="Environmental storytelling") }}
+{{ figure(path="environmental storytelling.jpg", caption="Environmental storytelling") }}
 
 Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
 trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.

@@ -9,7 +9,8 @@ taxonomies = [{ name = "tags" }]
 
 [markdown]
 highlight_code = true
-# highlight_theme = "base16-ocean-dark"
+highlight_theme = "monokai-pro-terminimal"
+extra_syntaxes_and_themes = ["highlight_themes"]
 
 # Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
 [extra]
