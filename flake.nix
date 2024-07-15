@@ -51,7 +51,7 @@
             ln --symbolic ${theme} themes/${themeName}
           '';
           buildPhase = let
-            version = self.rev or self.dirtyRev or "unknown";
+            version = self.rev or "unknown";
           in ''
             sed -i '/\[extra\]/a version = "${version}"' config.toml
             cat config.toml
