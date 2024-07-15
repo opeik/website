@@ -21,8 +21,8 @@ Disclaimer aside, let's begin the descent into madness.
 
 Generally, shell scripts are used when a task needs to be automated, but it's not worth pulling out
 a "real" (see: time-consuming) programming language. Given this, it stands to reason that shell scripting languages should
-be quick and easy to learn. If it's easier to write a program
-than it is to write a shell script, it has failed to serve its only purpose.
+be quick to learn and easy to write. If it's easier to write a program
+than it is to write a shell script, it's failed to serve its only purpose.
 
 > Foreshadowing is a narrative device in which suggestions or warnings about events to come are dropped or planted.
 
@@ -42,7 +42,7 @@ expiration date.
 To prove how esoteric some of this knowledge is, here's a test: how does POSIX shell implement
 features such as constants (`true` and `false`) and comparing values?
 
-Was your answer: [executing a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
+Was your answer: [running a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
 
 [Control flow](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c)?
 
