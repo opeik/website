@@ -80,7 +80,7 @@ debugging POSIX shell scripts, yet it still _regularly_ surprises me, as if it's
 trying to comprehend it. At the time of writing, the [Bash Pitfalls] page listing "common mistakes
 made by bash users" contains 64 (sixty-four) entries!
 
-POSIX shell is not my favourite language.
+POSIX shell is not my favourite language.<sup>[\[1\]]</sup>
 
 > Sometimes, foreshadowing can be relatively obvious.
 
@@ -93,7 +93,7 @@ life choices.
 It is with regret, my dear reader, that I inform you Powershell is just as bad in a variety of new and exciting ways.
 The rest of the post details my first-time user experience with Powershell.
 
-### Running a command
+### Running a program
 
 Do you know what shell scripts frequently do? Run programs. They run other programs.
 
@@ -109,7 +109,7 @@ Let's do it the "Powershell way" and use [`Start-Process`]:
 Start-Process -Wait -FilePath 'my\amazing\custom\app.exe' -ArgumentList 'hello' 'C:\this has spaces\foo.txt' 'another parameter' 'wow so many parameters!' "-yak-type=$yak_type"
 ```
 
-### Wait, how do I break lines?
+### Wait, how do I break this line?
 
 Hmm, this line is getting rather long. Now that I think about it, all the examples I see of Powershell code run off the page... I wonder why?
 
@@ -131,7 +131,7 @@ To split lines in Powershell, you can either:
 
 Oh, by the way, both methods are [finnicky](https://stackoverflow.com/a/53575932) and prone to [breaking code](https://devblogs.microsoft.com/scripting/powershell-code-breaks-break-line-not-code/).
 
-### Array coercion?
+### Wait, why's my array being coerced?
 
 Let's sidestep this nonsense by defining the arguments beforehand.
 
@@ -171,7 +171,31 @@ Start-Process ... -ArgumentList (,$args)
 
 > In this example, `$args` is wrapped in an array so that the entire array is passed to the script block as a single object.
 
-### I have no args, and I must scream
+### Wait, where's my output?
+
+If you run a program via [`Start-Process`], you won't get any output in your terminal. Here's what you're _supposed_ to do:<sup>[\[2\]]</sup>
+
+```powershell
+$pinfo = New-Object System.Diagnostics.ProcessStartInfo
+$pinfo.FileName = "ping.exe"
+$pinfo.RedirectStandardError = $true
+$pinfo.RedirectStandardOutput = $true
+$pinfo.UseShellExecute = $false
+$pinfo.Arguments = "localhost"
+$p = New-Object System.Diagnostics.Process
+$p.StartInfo = $pinfo
+$p.Start() | Out-Null
+$p.WaitForExit()
+$stdout = $p.StandardOutput.ReadToEnd()
+$stderr = $p.StandardError.ReadToEnd()
+Write-Host "stdout: $stdout"
+Write-Host "stderr: $stderr"
+Write-Host "exit code: " + $p.ExitCode
+```
+
+Next section!
+
+### Wait, why doesn't anything work?
 
 The examples in the previous section involving `$args` don't work, I lied.
 You see, I was simultaneously suffering through the two aforementioned issues and a third, secret issue!
@@ -184,7 +208,7 @@ Here's the error:
      | Cannot assign automatic variable 'args' with type 'System.Object[]'
 ```
 
-If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this.<sup>[\[1\]]</sup>
+If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this.<sup>[\[3\]]</sup>
 
 My sanity is rapidly deteriorating; what's the problem this time?! Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function, obviously!
 
@@ -196,18 +220,24 @@ Why is this error message so bad?
 Throughout this ordeal, I kept asking the same question: why?
 
 Why was this made? Why was this made _this_ way? What was happening that created the circumstances that led to this
-being made the way that it was made?<sup>[\[2\]]</sup>
+being made the way that it was made?<sup>[\[4\]]</sup>
 
 In the future, I'd rather deal with the hassle of installing [`nushell`] on every CI runner
 than continue to subject myself to the depraved machinations of POSIX shell and Powershell.
 I encourage you to do the same, we all deserve better.
 
-Powershell is not my favourite language.<sup>[\[3\]]</sup>
+Powershell is not my favourite language.<sup>[\[1\]]</sup>
 
 ["worse is better"]: https://en.wikipedia.org/wiki/Worse_is_better
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
 [`nushell`]: https://www.nushell.sh/
 [Bash Pitfalls]: https://mywiki.wooledge.org/BashPitfalls
-[\[1\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
-[\[2\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
-[\[3\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
+
+
+[\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
+
+[\[2\]]: https://stackoverflow.com/a/8762068
+
+[\[3\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
+
+[\[4\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
