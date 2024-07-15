@@ -19,7 +19,7 @@
                 © {{ date_macros::now_year() }} {{ config.extra.author }} ::
 
                 {% if version %}
-                version <a href="{{ config.extra.source_url }}/tree/{{ version }}">
+                version <a href="{{ config.extra.version_url }}/{{ version }}">
                     {{ version | truncate(length=7, end="") }}</a> ::
                 {% endif %}
 

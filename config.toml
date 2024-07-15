@@ -15,6 +15,7 @@ highlight_code = true
 [extra]
 blog_path = "blog"
 source_url = "https://github.com/opeik/website"
+version_url = "https://github.com/opeik/website/tree"
 accent_color = "pink"
 background_color = "pink"
 logo_text = "Sandro Stikić"

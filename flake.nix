@@ -51,11 +51,12 @@
             ln --symbolic ${theme} themes/${themeName}
           '';
           buildPhase = let
-            version = self.rev or "unknown";
+            version = pkgs.lib.strings.removeSuffix "-dirty" (self.rev or self.dirtyRev or "unknown");
           in ''
+            # Add git revision to the config for inclusion in the footers.
             sed -i '/\[extra\]/a version = "${version}"' config.toml
-            cat config.toml
 
+            # Build the website!
             zola build
 
             # Format the output for ease of debugging.

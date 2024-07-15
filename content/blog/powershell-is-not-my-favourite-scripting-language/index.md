@@ -71,10 +71,9 @@ I don't like POSIX shell, and I struggle to see how _anyone_ could like POSIX sh
 I have spent an embarrassing amount of my life writing and
 debugging POSIX shell scripts, yet it still _regularly_ surprises me, as if it's mocking me for
 trying to comprehend it. At the time of writing, the [Bash Pitfalls] page listing "common mistakes
-made by bash users" contains 64 (sixty-four) entries! That's good environmental storytelling, I can
-almost picture the blood stains on the walls.
+made by bash users" contains 64 (sixty-four) entries!
 
-{{ figure(path="turn off vsync.jpg", caption="Environmental storytelling") }}
+{{ figure(path="environmental storytelling.png", caption="Environmental storytelling") }}
 
 > Sometimes, foreshadowing can be relatively obvious.
 
