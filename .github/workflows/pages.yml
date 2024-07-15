@@ -3,8 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    paths:
-      [config.toml, flake.*, content/**, static/**, templates/**, .github/**]
+    paths: [config.toml, flake.*, content/**, static/**, templates/**, styles/**, .github/**]
   workflow_dispatch:
 
 permissions:
