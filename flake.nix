@@ -21,7 +21,11 @@
       theme = pkgs.stdenv.mkDerivation {
         name = "zola-theme-terminimal";
         src = zola-theme;
-        patchPhase = "substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'";
+        patchPhase = ''
+          substituteInPlace sass/color/pink.scss --replace '238,114,241' '171,158,239'
+          echo "@import 'mods';" >> sass/style.scss
+          cp ${./styles/mods.scss} sass/mods.scss
+        '';
         installPhase = "cp -R . $out";
       };
       themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
