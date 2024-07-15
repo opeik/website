@@ -47,7 +47,7 @@
               (
                 x:
                   builtins.any (file: pkgs.lib.hasSuffix file x) ["config.toml"]
-                  || builtins.any (dir: pkgs.lib.hasInfix dir x) ["content" "static" "templates" "styles"]
+                  || builtins.any (dir: pkgs.lib.hasInfix dir x) ["content" "static" "templates" "styles" "highlight_themes"]
               )
               path;
           };
