@@ -35,7 +35,7 @@ jobs:
 
       - name: Build website
         run: |
-          nix build --print-build-logs
+          nix build .#website --print-build-logs
           cp --recursive --dereference --no-preserve=mode,ownership result public
 
       - name: Setup GitHub Pages

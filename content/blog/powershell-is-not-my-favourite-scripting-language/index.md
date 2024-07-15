@@ -1,5 +1,6 @@
 +++
-title = "Powershell is not my favourite scripting language"
+title = "Powershell is not my favourite language"
+date = "2024-07-14"
 
 [taxonomies]
 tags = ["rant", "powershell", "posix", "shell"]
@@ -33,28 +34,33 @@ abstract causality and pain), you learn _eventually_ how to kludge together scri
 compulsion to violate the principle of least surprise.
 
 POSIX shell is a concrete example of ["worse is better"] in action. It's a glue used to create
-precarious and unholy obelisks comprised of disjoint software, the undying remnants of bygone relics
-5 decades past.
+precarious and unholy software obelisks, the undying remnants of bygone relics 5 decades past their
+expiration date.
 
-There's barely _any_ language in there to speak of; most of the "syntax" is just _external_ programs.
+### Never ending surprises
 
-Control flow? External program.
+There's barely any _language_ in POSIX shell to speak of; most of the "syntax" is just _external_ programs.
+
+[Control flow](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c)?
 
 ```
 ❯ which [
 /bin/[
 ```
 
-Constants? External program.
+[Constants](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/true.c)?
+
 ```
 ❯ which true
 /usr/bin/true
 ```
 
+Both external programs.
+
 Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
-trying to wrangle any semblance of reliability from this cacophony of bad ideas. Unhandled errors
-don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
-Accessing undefined variables isn't even an error, it evaluates to an empty string.
+trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
+Unhandled errors don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
+Subshells are utterly broken. Evaluating undefined variables results in an empty string.
 
 Furthermore, lacking a standard for structuring data means relying on ad-hoc conventions, such as
 `find`'s `-print0` parameter, which separates results by an ASCII `NUL` character. I hope
@@ -64,7 +70,11 @@ to handle it!
 I don't like POSIX shell, and I struggle to see how _anyone_ could like POSIX shell.
 I have spent an embarrassing amount of my life writing and
 debugging POSIX shell scripts, yet it still _regularly_ surprises me, as if it's mocking me for
-trying to comprehend it.
+trying to comprehend it. At the time of writing, the [Bash Pitfalls] page listing "common mistakes
+made by bash users" contains 64 (sixty-four) entries! That's good environmental storytelling, I can
+almost picture the blood stains on the walls.
+
+{{ figure(path="turn off vsync.jpg", caption="Environmental storytelling") }}
 
 > Sometimes, foreshadowing can be relatively obvious.
 
@@ -89,7 +99,7 @@ To run programs in Powershell, you can either:
 
 Let's do it the "Powershell way" and use [`Start-Process`]:
 
-```pwsh
+```powershell
 Start-Process -Wait -FilePath 'my\amazing\custom\app.exe' -ArgumentList 'hello' 'C:\this has spaces\foo.txt' 'another parameter' 'wow so many parameters!' "-yak-type=$yak_type"
 ```
 
@@ -102,13 +112,13 @@ Anyway, let's make this more legible by splitting the command over multiple line
 To split lines in Powershell, you can either:
 
 1) use a backtick:
-    ```pwsh
-    # I'm not making this up—the space before the backtick is required. Why?
+    ```powershell
+    # The space before the backtick is required. Why?
     Get-ChildItem -Recurse `
         -Filter *.jpg
     ```
 2) use a pipe:
-    ```pwsh
+    ```powershell
     Get-ChildItem |
         Select Name,Length
     ```
@@ -119,7 +129,7 @@ Oh, by the way, both methods are [finnicky](https://stackoverflow.com/a/53575932
 
 Let's sidestep this nonsense by defining the arguments beforehand.
 
-```pwsh
+```powershell
 # You can define arrays like this:
 [string[]] $args = 'hello', 'C:\this has spaces\foo.txt', 'another parameter', 'wow so many parameters!', "-yak-type=$yak_type"
 
@@ -138,7 +148,7 @@ It's a little awkward, but I can deal with it.
 
 After inspecting the [`Start-Process`] docs, we find that  `-ArgumentList` expects a `string[]`. Easy enough, any sane person would then try to do this:
 
-```pwsh
+```powershell
 Start-Process ... -ArgumentList $args
 ```
 
@@ -149,7 +159,7 @@ reminded me of POSIX shell. **Nothing** should remind me of POSIX shell.
 
 How do we solve this? Well, if you'd read the docs properly you _utter buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're supposed to do:
 
-```pwsh
+```powershell
 Start-Process ... -ArgumentList (,$args)
 ```
 
@@ -179,18 +189,19 @@ Why is this error message so bad?
 
 Throughout this ordeal, I kept asking the same question: why?
 
-Why was this made? Why was this made _this_ way? What was happening that created the circumstances that that led to this
+Why was this made? Why was this made _this_ way? What was happening that created the circumstances that led to this
 being made the way that it was made?<sup>[\[2\]]</sup>
 
 In the future, I'd rather deal with the hassle of installing [`nushell`] on every CI runner
 than continue to subject myself to the depraved machinations of POSIX shell and Powershell.
 I encourage you to do the same, we all deserve better.
 
-Powershell is not my favourite scripting language.<sup>[\[3\]]</sup>
+Powershell is not my favourite language.<sup>[\[3\]]</sup>
 
 ["worse is better"]: https://en.wikipedia.org/wiki/Worse_is_better
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
 [`nushell`]: https://www.nushell.sh/
+[Bash Pitfalls]: https://mywiki.wooledge.org/BashPitfalls
 [\[1\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
 [\[2\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
 [\[3\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6

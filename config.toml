@@ -1,4 +1,4 @@
-# Zola configuration, see: `https://www.getzola.org/documentation/getting-started/configuration`.
+# Zola configuration, see: https://www.getzola.org/documentation/getting-started/configuration
 base_url = "https://stikić.com"
 title = "Sandro Stikić"
 theme = "terminimal"
@@ -9,9 +9,11 @@ taxonomies = [{ name = "tags" }]
 
 [markdown]
 highlight_code = true
+# highlight_theme = "base16-ocean-dark"
 
+# Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
 [extra]
-# Theme settings
+blog_path = "blog"
 source_url = "https://github.com/opeik/website"
 accent_color = "pink"
 background_color = "pink"
@@ -19,6 +21,7 @@ logo_text = "Sandro Stikić"
 author = "Sandro Stikić"
 favicon = "/favicon.png"
 favicon_mimetype = "image/png"
+post_view_navigation_prompt = "Read more?"
 menu_items = [
     { name = "blog", url = "$BASE_URL" },
     { name = "tags", url = "$BASE_URL/tags" },

@@ -1,4 +1,4 @@
-# Nix flake, see: <https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html>
+# Nix flake, see: https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # Nix package repository
@@ -30,6 +30,7 @@
         # `nix run .#serve`
         serve = pkgs.writeShellScriptBin "serve" "${pkgs.zola}/bin/zola serve --drafts";
 
+        # `nix build .#website`
         website = pkgs.stdenv.mkDerivation {
           name = "website";
           # Only include the zola relevant files to reduce frivolous rebuilds.
@@ -49,20 +50,23 @@
             mkdir --parents themes
             ln --symbolic ${theme} themes/${themeName}
           '';
-          buildPhase = ''
-            # Build
+          buildPhase = let
+            version = self.rev or self.dirtyRev or "unknown";
+          in ''
+            sed -i '/\[extra\]/a version = "${version}"' config.toml
+            cat config.toml
+
             zola build
-            # Format
+
+            # Format the output for ease of debugging.
             prettier --bracket-same-line true --write public
-            # Strip empty lines
+
+            # Templates tend to create a lot of empty lines, strip them.
             find public -type f -name '*.html' -exec sed -i '/^$/d' {} +
           '';
           installPhase = "cp --recursive public $out";
         };
       };
-
-      # `nix build`
-      defaultPackage = self.packages.${system}.website;
 
       # `nix develop`
       devShell = pkgs.mkShell {

@@ -1,5 +1,6 @@
 +++
 title = "macOS HomeKit automation"
+date = "2022-08-20"
 
 [taxonomies]
 tags = ["macos", "homekit", "automation", "hammerspoon", "lua"]
@@ -20,11 +21,11 @@ power socket instead. I bought a [Wemo HomeKit smart plug][smart-plug], connecte
 speakers to it, and then added it to the Home app. Sure enough, when I toggle the smart plug,
 everything springs to life.
 
-{{ figure(src="/macos-homekit-automation/homekit.png", caption="Speakers in the Home app") }}
+{{ figure(path="homekit.png", caption="Speakers in the Home app") }}
 
 Next, I created a pair of shortcuts via the Shortcuts app to power the speakers on and off.
 
-{{ figure(src="/macos-homekit-automation/shortcut.png", caption="Controlling the speakers via the Shortcuts app") }}
+{{ figure(path="shortcut.png", caption="Controlling the speakers via the Shortcuts app") }}
 
 Since macOS ships a Shortcuts command line utility, we can now control the speakers like so:
 

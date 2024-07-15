@@ -1,5 +1,6 @@
 +++
 title = "space.rs"
+date = "2022-01-27"
 
 [taxonomies]
 tags = ["rust"]
@@ -8,7 +9,7 @@ tags = ["rust"]
 Memory safety: the final frontier
 
 <div id="banner">
-  <img id="ferris" src="/space-rs/ferris.svg">
+  <img id="ferris" src="/blog/space-rs/ferris.svg">
   <div id="stars"></div>
 </div>
 

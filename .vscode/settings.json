@@ -7,9 +7,6 @@
         "pname",
         "stikic"
     ],
-    "files.exclude": {
-        "**/public": true,
-    },
     "explorer.fileNesting.patterns": {
         "flake.nix": "flake.lock",
         "README.md": "LICENSE.md",
