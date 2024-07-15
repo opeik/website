@@ -37,9 +37,12 @@ POSIX shell is a concrete example of ["worse is better"] in action. It's a glue 
 precarious and unholy software obelisks, the undying remnants of bygone relics 5 decades past their
 expiration date.
 
-### Never ending surprises
+### I want to get off Mister POSIX's Wild Ride
 
-There's barely any _language_ in POSIX shell to speak of; most of the "syntax" is just _external_ programs.
+To prove how esoteric some of this knowledge is, here's a test: how does POSIX shell implement
+features such as constants (`true` and `false`) and comparing values?
+
+Was your answer: [executing a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
 
 [Control flow](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c)?
 
@@ -55,7 +58,12 @@ There's barely any _language_ in POSIX shell to speak of; most of the "syntax" i
 /usr/bin/true
 ```
 
-Both external programs.
+They're both executables! But only sometimes! As per the specification,
+all ["utilities"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_01)
+may be ["built-in"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14),
+meaning the code is included in the shell, removing the need for the magic executables.
+
+{{ figure(path="environmental storytelling.png", caption="Environmental storytelling") }}
 
 Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
 trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
@@ -67,13 +75,12 @@ Furthermore, lacking a standard for structuring data means relying on ad-hoc con
 whatever you're piping `find` into supports this, or you'll have to add _yet more_ slop
 to handle it!
 
-I don't like POSIX shell, and I struggle to see how _anyone_ could like POSIX shell.
 I have spent an embarrassing amount of my life writing and
 debugging POSIX shell scripts, yet it still _regularly_ surprises me, as if it's mocking me for
 trying to comprehend it. At the time of writing, the [Bash Pitfalls] page listing "common mistakes
 made by bash users" contains 64 (sixty-four) entries!
 
-{{ figure(path="environmental storytelling.png", caption="Environmental storytelling") }}
+POSIX shell is not my favourite language.
 
 > Sometimes, foreshadowing can be relatively obvious.
 
@@ -179,7 +186,7 @@ Here's the error:
 
 If you think this is an good example of error messages, you need to stop settling for less in life before it's too late. You matter, and you deserve better than this.<sup>[\[1\]]</sup>
 
-My sanity is rapidly deteriorating; what's the problem this time‽ Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function, obviously!
+My sanity is rapidly deteriorating; what's the problem this time?! Well, you see, `$args` is an ["automatic variable"](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4) that Powershell defines, and it contains the arguments passed to the script or function, obviously!
 
 Why is `$args` in the global namespace? Why am I allowed to mutate it? Why does it use type erasure?
 Why is this error message so bad?
