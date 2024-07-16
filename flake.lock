@@ -61,13 +61,13 @@
       "locked": {
         "lastModified": 1717801926,
         "narHash": "sha256-j6mTUmybWlaNJchnnAaGMG6xrpyuqllQSLLEzXeQxek=",
-        "owner": "pawroman",
+        "owner": "opeik",
         "repo": "zola-theme-terminimal",
         "rev": "c62018781192a6b3bc37860b10d6550eac77994c",
         "type": "github"
       },
       "original": {
-        "owner": "pawroman",
+        "owner": "opeik",
         "repo": "zola-theme-terminimal",
         "type": "github"
       }

@@ -34,7 +34,7 @@ abstract causality and pain), you learn _eventually_ how to kludge together scri
 compulsion to violate the principle of least surprise.
 
 POSIX shell is a concrete example of ["worse is better"] in action. It's a glue used to create
-precarious and unholy software obelisks, the undying remnants of bygone relics 5 decades past their
+precarious and unholy software obelisks, the lingering shadow of antiquated relics 3 decades past their
 expiration date.
 
 ### I want to get off Mister POSIX's Wild Ride
@@ -44,7 +44,7 @@ features such as constants (`true` and `false`) and comparing values?
 
 Was your answer: [running a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
 
-[Control flow](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c)?
+[Control flow](test)?
 
 ```
 ❯ which [
@@ -58,12 +58,33 @@ Was your answer: [running a magic executable](https://github.com/bminor/bash/blo
 /usr/bin/true
 ```
 
+You see, when you compare a value like this: ->
+
+```sh
+if [ -z "$foo" ]; then
+#  ┬
+#  ╰──── ->
+```
+
+the shell runs the binary literally called `[`, which _only_ works because `/bin` is
+_probably_ in your shells search path. It gets worse though, `[` is _actually_ `test`, which is either a binary or a built-in (depending on your
+zip code). Your system might also have `/bin/[` symlinked to `/bin/test`. This is a hack. They codified this god-awful hack into POSIX rather than define something as basic
+
 They're both executables! But only sometimes! As per the specification,
 all ["utilities"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_01)
 may be ["built-in"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14),
-meaning the code is included in the shell, removing the need for the magic executables.
+meaning the code is included in the shell, removing the need for said magic executables.
 
-{{ figure(path="environmental storytelling.jpg", caption="Environmental storytelling") }}
+
+{{
+    figure(src="environmental storytelling.jpg", caption="Environmental storytelling",
+    alt="A variant of the ancient Dead Space 'turn off vsync' meme. The protagonist, Isaac Clarke, stands in front a wall with 'set -euo pipefall' scrawled in blood.")
+}}
+
+<!--
+
+Bash: bourne again shell: unwilling to die
+ -->
 
 Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
 trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
@@ -86,12 +107,18 @@ POSIX shell is not my favourite language.<sup>[\[1\]]</sup>
 
 ## Introducing Powershell
 
-This brings us to Powershell. In concept, I quite like Powershell. Equipped with several
-decades of hindsight, it seeks to be a shell scripting language that doesn't make you reconsider your
-life choices.
+This brings us to Powershell. In concept, I quite like Powershell; it seeks to be a shell
+scripting language that doesn't make you reconsider your life choices.
+Powershell was released in 2006, meaning it's equipped with almost 20(!) years of hindsight from POSIX
+shell. Similar to POSIX shell, it provides little functionality by itself. Unlike POSIX shell,
+it conveniently exposes existing .NET APIs removing much of wheel re-invention that goes on in POSIX shell scripts.
 
-It is with regret, my dear reader, that I inform you Powershell is just as bad in a variety of new and exciting ways.
-The rest of the post details my first-time user experience with Powershell.
+One _massive_ advantage Powershell has over POSIX shell is the shift away from unstructured byte streams. When
+piping one command to another, structured .NET objects are passed instead. I cannot stress enough
+how much of an improvement is, being forced to pass around byte streams makes me feel like neanderthal.
+
+However, it is with regret, my dear reader, that I inform you Powershell is just as bad in a variety
+of new and exciting ways. The rest of the post details my first-time user experience with Powershell.
 
 ### Running a program
 
@@ -133,7 +160,7 @@ Oh, by the way, both methods are [finnicky](https://stackoverflow.com/a/53575932
 
 ### Wait, why's my array being coerced?
 
-Let's sidestep this nonsense by defining the arguments beforehand.
+I wasn't able to get either line break methods working so let's sidestep this nonsense by defining the arguments beforehand.
 
 ```powershell
 # You can define arrays like this:
@@ -161,15 +188,18 @@ Start-Process ... -ArgumentList $args
 ...but that doesn't work.
 
 It substitutes `$args` with the first element of the array. The conniption induced by this behaviour
-reminded me of POSIX shell. **Nothing** should remind me of POSIX shell.
+made me vividly recall my past POSIX shell trauma. Exposing past trauma in your users is generally
+something to be avoided.
 
-How do we solve this? Well, if you'd read the docs properly you _utter buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're supposed to do:
+How do we solve this? Well, if you'd read the docs properly you _utter buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're _supposed_ to do:
 
 ```powershell
 Start-Process ... -ArgumentList (,$args)
 ```
 
 > In this example, `$args` is wrapped in an array so that the entire array is passed to the script block as a single object.
+
+Powershell takes all that
 
 ### Wait, where's my output?
 
@@ -193,7 +223,7 @@ Write-Host "stderr: $stderr"
 Write-Host "exit code: " + $p.ExitCode
 ```
 
-Next section!
+I have nothing to add, this should speak for itself. Next section!
 
 ### Wait, why doesn't anything work?
 
@@ -232,6 +262,8 @@ Powershell is not my favourite language.<sup>[\[1\]]</sup>
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
 [`nushell`]: https://www.nushell.sh/
 [Bash Pitfalls]: https://mywiki.wooledge.org/BashPitfalls
+
+[test]: https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c
 
 
 [\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6

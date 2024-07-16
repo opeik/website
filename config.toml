@@ -10,15 +10,17 @@ taxonomies = [{ name = "tags" }]
 [markdown]
 highlight_code = true
 highlight_theme = "monokai-pro-terminimal"
-extra_syntaxes_and_themes = ["highlight_themes"]
+extra_syntaxes_and_themes = ["themes/terminimal/highlight_themes"]
 
 # Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
 [extra]
 blog_path = "blog"
 source_url = "https://github.com/opeik/website"
 version_url = "https://github.com/opeik/website/tree"
-accent_color = "pink"
-background_color = "pink"
+mastodon_url = "https://hachyderm.io/@opeik"
+font = "iosevka"
+accent_color = "purple"
+background_color = "purple"
 logo_text = "Sandro Stikić"
 author = "Sandro Stikić"
 favicon = "/favicon.png"

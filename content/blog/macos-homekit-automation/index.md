@@ -21,11 +21,11 @@ power socket instead. I bought a [Wemo HomeKit smart plug][smart-plug], connecte
 speakers to it, and then added it to the Home app. Sure enough, when I toggle the smart plug,
 everything springs to life.
 
-{{ figure(path="homekit.png", caption="Speakers in the Home app") }}
+{{ figure(src="homekit.png", caption="Speakers in the Home app") }}
 
 Next, I created a pair of shortcuts via the Shortcuts app to power the speakers on and off.
 
-{{ figure(path="shortcut.png", caption="Controlling the speakers via the Shortcuts app") }}
+{{ figure(src="shortcut.png", caption="Controlling the speakers via the Shortcuts app") }}
 
 Since macOS ships a Shortcuts command line utility, we can now control the speakers like so:
 

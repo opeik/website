@@ -10,8 +10,6 @@ on:
       - content/**
       - static/**
       - templates/**
-      - styles/**
-      - highlight_themes/**
   workflow_dispatch:
 
 permissions:
