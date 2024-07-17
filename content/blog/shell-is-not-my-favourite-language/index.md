@@ -103,9 +103,10 @@ shell programmers in the vicinity.
 
 ### Infernal fortress of suffering
 
-Okay, deep breaths... the IFS (internal field seperator) is a value controlling how the
-shell handles word spliting. The semantics are _insane_—an example is _mandatory_ for
-even beginning to envision the crimes contained within those three miserable letters.
+Okay, deep breaths... the word of power is "IFS". The IFS (internal field seperator) is
+a value controlling how the shell handles word spliting.
+The semantics are _insane_—an example is _mandatory_ for even beginning to envision
+the crimes contained within those three miserable letters.
 
 Let's write a shell script that prints the size of all files in the current directory:
 
@@ -129,7 +130,7 @@ done
 ╰───┴──────┴──────┴──────┴──────────────╯
 ```
 
-> Readers with a cursory understanding of POSIX shell have begun involuntarily
+> Readers with a cursory understanding of POSIX shell have already begun involuntarily
 > clenching their body.
 
 Let's try running it!
@@ -143,7 +144,7 @@ Let's try running it!
 
 Hmm... it _seems_ to work?
 
-For no particular reason, let's add a file including _spaces_:
+For no particular reason, let's add a filename containing _spaces_:
 
 ```
 ❯ touch "can't wake up"
@@ -171,8 +172,9 @@ shell scripts often collapse like a bridge made of popsicle sticks when presente
 with a file containing spaces? Now you know!
 
 If you're truly unhinged, you can leverage the IFS to perform rudimentary parsing.
-I would _strongly_ advise against it, take a minute to read through [this
-Stack Overflow answer on how to tokenize a string][bash_tokenize_string]. Of the nine solutions
+I would _strongly_ advise against it, take a minute to read through this incredibly well-written
+[Stack Overflow answer][bash_tokenize_string] regarding how to tokenize strings.
+Of the nine solutions
 presented, eight were incorrect (that's 88.8%!), all in incredibly subtle ways.
 Do you feel it now—the torment of being unable to accomplish basic programming in shell scripts?
 Are you beginning to understand _why_ this tool makes me irrationally upset?!
