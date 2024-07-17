@@ -182,32 +182,37 @@ Are you beginning to understand _why_ this tool makes me irrationally upset?!
 ### Byte streams are the `Any` of UNIX
 
 POSIX shell lets you combine multiple commands together to form a "pipeline". This is accomplished
-by connecting [`stdout`][stdout] stream of one program into the [`stdin`][stdin] stream of another.
+by connecting the [`stdout`][stdout] stream of one program into the [`stdin`][stdin] stream of another.
 
 ```
 ❯ find . -type f | xargs ls
 ```
 
 ```
-                ╭─ stdin         ╭─ stdin
-                │                │
-   find ─┬───▶─┴─ xargs ─┬───▶─┴─ terminal
-         │                │
- stdout ─╯        stdout ─╯
+               ╭─ stdin         ╭─ stdin         ╭─ stdin
+               │                │                │
+  find ─┬───▶─┴─ xargs ─┬───▶─┴─ shell ─┬───▶─┴─ terminal
+        │                │                │
+stdout ─╯        stdout ─╯        stdout ─╯
 ```
 
 In contrast, if I ran `cat` in a shell:
-- my keyboard is connected to `stdin`
-- my terminal is connected to `stdout`
-- `boop\n` is sent from my keyboard to `cat` via `stdin`
-- `cat` forwards `stdin` to `stdout`
-- my terminal is connected to `stdout`, so `boop` appears on my screen twice
-
 ```
 ❯ cat
 boop\n
 boop
 ```
+```
+                 ╭─ stdin         ╭─ stdin       ╭─ stdin         ╭─ stdin
+                 │                │              │                │
+keyboard ─┬───▶─┴─ shell ─┬───▶─┴─ cat ─┬───▶─┴─ shell ─┬───▶─┴─ terminal
+          │                │              │                │
+  stdout ─╯        stdout ─╯      stdout ─╯        stdout ─╯
+```
+
+- `boop\n` is sent from my keyboard to `cat` via `stdin`
+- `cat` forwards `stdin` to `stdout`
+- my terminal is connected to `stdout`, so `boop` appears on my screen twice
 
 This is incredibly powerful... in _theory_. In _practice_ it's a wilderness, because streams are unstructured.
 You're not sending text through streams, you're sending bytes, since text would
@@ -236,8 +241,6 @@ Here's our previous example again:
 ❯ find . -type f | xargs ls -al
 xargs: unmatched single quote; by default quotes are special to xargs unless you use the -0 option
 ```
-
-> This is a bad idea (just use `find -exec`), it's only for illustrational purposes.
 
 As you can see, our pipeline breaks because the filename contains a quote. This is fine,
 since filenames obviously _never_ contain quotes.
