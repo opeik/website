@@ -272,12 +272,12 @@ POSIX shell is not my favourite language.<sup>[\[1\]]</sup>
 This brings us to Powershell. In concept, I quite like Powershell; it seeks to be a shell
 scripting language that doesn't make you reconsider your life choices.
 Powershell was released in 2006, meaning it's equipped with almost 20(!) years of hindsight from POSIX
-shell. Similar to POSIX shell, it provides little functionality by itself. Unlike POSIX shell,
+shell. Similar to POSIX shell, it provides little functionality by itself, but unlike POSIX shell,
 it conveniently exposes existing .NET APIs removing much of wheel re-invention that goes on in POSIX shell scripts.
 
 One _massive_ advantage Powershell has over POSIX shell is the shift away from unstructured byte streams. When
 piping one command to another, structured .NET objects are passed instead. I cannot stress enough
-how much of an improvement is, being forced to pass around byte streams makes me feel like neanderthal.
+how much of an improvement is, being forced to use byte streams makes me feel like neanderthal.
 
 However, it is with regret, my dear reader, that I inform you Powershell is just as bad in a variety
 of new and exciting ways. The rest of the post details my first-time user experience with Powershell.
@@ -361,7 +361,7 @@ Start-Process ... -ArgumentList (,$args)
 
 > In this example, `$args` is wrapped in an array so that the entire array is passed to the script block as a single object.
 
-Powershell takes all that
+<!-- Powershell takes all that -->
 
 ### Wait, where's my output?
 
