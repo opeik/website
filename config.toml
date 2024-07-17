@@ -11,6 +11,7 @@ taxonomies = [{ name = "tags" }]
 highlight_code = true
 highlight_theme = "monokai-pro-terminimal"
 extra_syntaxes_and_themes = ["themes/terminimal/highlight_themes"]
+external_links_target_blank = true
 
 # Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
 [extra]
@@ -26,6 +27,7 @@ author = "Sandro Stikić"
 favicon = "/favicon.png"
 favicon_mimetype = "image/png"
 post_view_navigation_prompt = "Read more?"
+page_titles = "combined"
 menu_items = [
     { name = "blog", url = "$BASE_URL" },
     { name = "tags", url = "$BASE_URL/tags" },

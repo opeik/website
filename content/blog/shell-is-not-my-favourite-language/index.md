@@ -9,9 +9,7 @@ tags = ["rant", "powershell", "posix", "shell"]
 Powershell wasted 10 hours of my life, so I was compelled to write this self-therapy session
 masquerading as a blog post.
 
-Before you discount this as the ravings of a UNIX fanboy, please understand that you couldn't
-be further from the truth. I sincerely tried to be fair and gave Powershell as much benefit of the
-doubt as I could muster.
+Before you discount my experience as the inane ravings of a UNIX fanboy, please understand that you couldn't be further from the truth. I sincerely tried to be fair and gave Powershell as much benefit of the doubt as I could muster.
 
 Disclaimer aside, let's begin the descent into madness.
 
@@ -21,7 +19,7 @@ Disclaimer aside, let's begin the descent into madness.
 
 Generally, shell scripts are used when a task needs to be automated, but it's not worth pulling out
 a "real" (see: time-consuming) programming language. Given this, it stands to reason that shell scripting languages should
-be quick to learn and easy to write. If it's easier to write a program
+be quick and easy to both learn and write. If it's easier to write a program
 than it is to write a shell script, it's failed to serve its only purpose.
 
 > Foreshadowing is a narrative device in which suggestions or warnings about events to come are dropped or planted.
@@ -30,66 +28,145 @@ than it is to write a shell script, it's failed to serve its only purpose.
 
 POSIX shell is, like most things descending from UNIX, poorly designed and
 incredibly unpleasant to use. Granted, once you've developed a mental model of how it works (via
-abstract causality and pain), you learn _eventually_ how to kludge together scripts relatively quickly. It has many warts, though, namely: inconsistency, error-prone string handling, and its
-compulsion to violate the principle of least surprise.
+abstract causality and pain), you _eventually_ learn how to kludge together scripts relatively quickly. That is to say, after you've received enough third-degree burns from
+touching the proverbial hot-plate, you learn what is and is not a good idea.
 
-POSIX shell is a concrete example of ["worse is better"] in action. It's a glue used to create
-precarious and unholy software obelisks, the lingering shadow of antiquated relics 3 decades past their
-expiration date.
+Over time, you learn to work around (or simply avoid) its many warts, namely:
+error-prone string handling and its compulsion to violate the [principle of least astonishment].
+POSIX shell is proof that ["worse is better"] is real and we can't have nice things.
+It's a glue used to create precarious and unholy software obelisks, the lingering shadow of undead relics 3 decades past their expiration date.
 
-### I want to get off Mister POSIX's Wild Ride
-
-To prove how esoteric some of this knowledge is, here's a test: how does POSIX shell implement
-features such as constants (`true` and `false`) and comparing values?
-
-Was your answer: [running a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
-
-[Control flow](test)?
-
-```
-❯ which [
-/bin/[
-```
-
-[Constants](https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/true.c)?
-
-```
-❯ which true
-/usr/bin/true
-```
-
-You see, when you compare a value like this: ->
-
-```sh
-if [ -z "$foo" ]; then
-#  ┬
-#  ╰──── ->
-```
-
-the shell runs the binary literally called `[`, which _only_ works because `/bin` is
-_probably_ in your shells search path. It gets worse though, `[` is _actually_ `test`, which is either a binary or a built-in (depending on your
-zip code). Your system might also have `/bin/[` symlinked to `/bin/test`. This is a hack. They codified this god-awful hack into POSIX rather than define something as basic
-
-They're both executables! But only sometimes! As per the specification,
-all ["utilities"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_09_01)
-may be ["built-in"](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14),
-meaning the code is included in the shell, removing the need for said magic executables.
-
+Did you know "bash" is short for "bourne again shell"? Personally, I would prefer if these shells
+_stayed_ dead. Unfortunately, I'm lacking a weapon with sacred affinity, so I'll
+have to settle for asking nicely.
 
 {{
     figure(src="environmental storytelling.jpg", caption="Environmental storytelling",
     alt="A variant of the ancient Dead Space 'turn off vsync' meme. The protagonist, Isaac Clarke, stands in front a wall with 'set -euo pipefall' scrawled in blood.")
 }}
 
-<!--
+### I want to get off Mister POSIX's Wild Ride
 
-Bash: bourne again shell: unwilling to die
- -->
+To prove how esoteric some of these "features" are, here's a test: how does POSIX shell implement
+features such as constants (`true` and `false`) and comparing values?
 
-Don't get me started on error handling. Praying nothing goes wrong is a better use of your time than
+Was your answer: [running a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
+
+```
+❯ which [
+/bin/[
+
+❯ which true
+/usr/bin/true
+```
+
+You see, when you compare a value:
+
+```sh
+if [ -z "$foo" ]; then
+#  ┬
+#  ╰─── this accursed symbol is actually an executable
+```
+
+...the shell runs the executable literally called `[`. As I alluded to before, `[` is _actually_ an alias for `test`. On macOS, they are separate
+executables, which checks out according to [POSIX][posix_test]:
+
+> The `test` and `[` utilities may be implemented as a single linked utility which examines the basename of the zeroth command line argument to determine whether to behave as the test or `[` variant.
+
+In any other context, this would be reviled as the affront to computing that it is. But since
+it's in the standard, it flies under the radar. I have a feeling the reception would have been different if `shell.js` tried to pull this.
+
+Also, I lied—they're only _sometimes_ executables! [As per POSIX](posix_builtin):
+
+> An implementation may choose to make any utility a built-in.
+
+...meaning in that case the utility code is included in the shell, removing the need
+for said magic executables. Why? Why have _this_ many failure modes?! Who thought
+this was a good idea? After wracking my brain, the _only_ reason I can think for
+its inclusion is _maybe_ to accommodate systems with so little storage
+that splitting utilities into separate files would be convenient.
+
+<!-- write a section about the IFS here -->
+
+### Sisyphean-oriented programming
+
+Don't get me started about error handling. Praying nothing goes wrong is a better use of your time than
 trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
 Unhandled errors don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
 Subshells are utterly broken. Evaluating undefined variables results in an empty string.
+
+Do you know how to spot a ~~traumatised~~ experienced shell programmer? It's easy! A
+word of power exists which, upon being spoken, will cause severe psyche damage to all
+shell programmers in the vicinity.
+
+> To set the mood, [click this link][ash lake] (for appropriate background music)
+then come back to this article.
+
+### Infernal fortress of suffering
+
+Okay, deep breaths... the IFS (internal field seperator) is a value controlling how the
+shell handles word spliting. The semantics are _insane_—an example is _mandatory_ for
+even beginning to envision the crimes therein.
+
+Let's write a shell script that prints the size of all files in the current directory:
+
+```sh
+for FILE in *; do
+    du -h $FILE
+done
+```
+
+...and he's what our directory looks like:
+
+```
+❯ touch wake me up
+❯ ls
+╭───┬──────┬──────┬──────┬──────────────╮
+│ # │ name │ type │ size │   modified   │
+├───┼──────┼──────┼──────┼──────────────┤
+│ 2 │ wake │ file │  2 B │ a minute ago │
+│ 0 │ me   │ file │  3 B │ a minute ago │
+│ 1 │ up   │ file │  4 B │ a minute ago │
+╰───┴──────┴──────┴──────┴──────────────╯
+```
+
+> Readers with a cursory understanding of POSIX shell have already begun involuntarily
+> clenching their body.
+
+Let's try running it!
+
+```
+❯ ../ifs.sh
+4.0K    wake
+4.0K    me
+4.0K    up
+```
+
+It _seems_ to work? For no reason in particular, let's try again with a file
+including _spaces_!
+
+```
+❯ touch "can't wake up"
+❯ ls
+╭───┬───────────────┬──────┬───────┬──────────╮
+│ # │     name      │ type │ size  │ modified │
+├───┼───────────────┼──────┼───────┼──────────┤
+│ 0 │ can't wake up │ file │ 666 B │ now      │
+╰───┴───────────────┴──────┴───────┴──────────╯
+
+❯ ../ifs.sh
+du: cannot access "can't": No such file or directory
+du: cannot access 'wake': No such file or directory
+du: cannot access 'up': No such file or directory
+```
+
+Oh no, it's busted.
+
+Recall that the IFS controls how word splitting is performed. What's occuring here is
+
+<!--
+### Byte streams are the `Any` of UNIX
+Byte streams are the `Any` of UNIX -->
 
 Furthermore, lacking a standard for structuring data means relying on ad-hoc conventions, such as
 `find`'s `-print0` parameter, which separates results by an ASCII `NUL` character. I hope
@@ -262,8 +339,12 @@ Powershell is not my favourite language.<sup>[\[1\]]</sup>
 [`Start-Process`]: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.4
 [`nushell`]: https://www.nushell.sh/
 [Bash Pitfalls]: https://mywiki.wooledge.org/BashPitfalls
+[principle of least astonishment]: https://en.wikipedia.org/wiki/Principle_of_least_astonishment
 
-[test]: https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c
+[posix_test]: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html
+[posix_builtin]: https://pubs.opengroup.org/onlinepubs/009604599/utilities/xcu_chap02.html#tag_02_14
+[bash_test]: https://github.com/coreutils/coreutils/blob/74ef0ac8a56b36ed3d0277c3876fefcbf434d0b6/src/test.c
+[ash lake]: https://soundcloud.com/argash/dark-souls-ost-the-ancient-dragon-extended
 
 
 [\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6

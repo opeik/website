@@ -17,9 +17,10 @@
                 version <a href="{{ config.extra.version_url }}/{{ version }}">
                     {{ version | truncate(length=7, end="") }}</a> ::
                 {% endif %}
-
                 <a href="{{ config.extra.source_url }}">source</a> ::
-                <a href="{{ get_url(path='atom.xml', trailing_slash=false) }}">rss</a>
+                {%- if config.generate_feed %}
+                <a href="{{ get_url(path='atom.xml', trailing_slash=false) }}">feed</a>
+                {% endif -%}
             </span>
         </div>
     </div>
