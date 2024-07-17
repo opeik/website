@@ -105,7 +105,7 @@ shell programmers in the vicinity.
 
 Okay, deep breaths... the IFS (internal field seperator) is a value controlling how the
 shell handles word spliting. The semantics are _insane_—an example is _mandatory_ for
-even beginning to envision the crimes contained within those miserable three letters.
+even beginning to envision the crimes contained within those three miserable letters.
 
 Let's write a shell script that prints the size of all files in the current directory:
 
