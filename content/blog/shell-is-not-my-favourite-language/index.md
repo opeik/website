@@ -199,14 +199,13 @@ rm -rf "$STEAMROOT/"*
 ```
 
 As previously mentioned, undefined variables are expanded to empty string, and
-in certain situations `$STEAMROOT` happens to be undefined. So, this is what _actually_ happens:
+in certain situations `$STEAMROOT` happens to be undefined—so this happens:
 
 ```sh
 rm -rf /*
 ```
 
-Oh no, it's busted. Hope you had backups!
-
+Oh no, it's busted.
 
 ### Infernal fortress of suffering
 
@@ -272,7 +271,9 @@ du: cannot access 'wake': No such file or directory
 du: cannot access 'up': No such file or directory
 ```
 
-Oh no, it's busted. The workaround is to _always_ quote variables (and string literals):
+Oh no, it's busted.
+
+The workaround is to _always_ quote variables (and string literals):
 
 ```sh
 for FILE in *; do
