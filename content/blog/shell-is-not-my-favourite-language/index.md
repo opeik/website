@@ -47,7 +47,7 @@ have to settle for asking nicely.
 
 ### I want to get off Mister POSIX's Wild Ride
 
-To prove how esoteric some of these "features" are, here's a test: how does POSIX shell implement
+Let's set the tone for the rest of this article with a test: how does POSIX shell implement
 features such as constants (`true` and `false`) and comparing values?
 
 Was your answer: [running a magic executable](https://github.com/bminor/bash/blob/f3b6bd19457e260b65d11f2712ec3da56cef463f/execute_cmd.c#L5589)?!
@@ -65,7 +65,7 @@ You see, when you compare a value like this:
 ```sh
 if [ -z "$foo" ]; then
 #  ┬
-#  ╰─── this accursed symbol is actually an executable
+#  ╰─── this accursed symbol haunts my nightmares
 ```
 
 ...the shell runs the executable literally called `[`. As I alluded to before, `[` is _actually_ an alias for `test`. On macOS, they are separate
@@ -74,13 +74,13 @@ executables, which checks out according to [POSIX][posix_test]:
 > The `test` and `[` utilities may be implemented as a single linked utility which examines the basename of the zeroth command line argument to determine whether to behave as the test or `[` variant.
 
 In any other context, this would be reviled as the affront to computing that it is. But since
-it's in the standard, it flies under the radar. I have a feeling the reception would have been different if `shell.js` tried to pull this.
+it was standardised _\[checks watch\]_ 38 years ago, it flies under the radar. I have a feeling the reception would have been different if `shell.js` tried to pull this.
 
 Also, I lied—they're only _sometimes_ executables! [As per POSIX](posix_builtin):
 
 > An implementation may choose to make any utility a built-in.
 
-...meaning in that case the utility code is included in the shell, removing the need
+...meaning in that case the utility is included in the shell, removing the need
 for said magic executables. Why? Why have _this_ many failure modes?! Who thought
 this was a good idea? After wracking my brain, the _only_ justification for its
 inclusion is _maybe_ to accommodate systems with so little storage
@@ -89,16 +89,22 @@ that splitting utilities into separate files would be convenient.
 ### Byte streams are the `Any` of UNIX
 
 POSIX shell lets you combine multiple commands together to form a "pipeline". This is accomplished
-by connecting the [`stdout`][stdout] stream of one program into the [`stdin`][stdin] stream of another.
+by using the pipe operator (`|`), which connects the [`stdout`][stdout] stream of one program into the [`stdin`][stdin] stream of another.
 
 ```
-❯ find . -type f | xargs ls
+❯ echo 'filename' | xargs cat
+howdy
 ```
+
+- `echo` sends `filename\n` to `stdout`
+- `xargs` receives `filename\n` from `stdin` due to the pipe
+- `xargs` runs `cat filename`, sending `howdy\n` (the contents of `filename`) to `stdout`
+- the shell forwards stdout to the terminal, so `howdy` appears on my screen
 
 ```
                ╭─ stdin         ╭─ stdin         ╭─ stdin
                │                │                │
-  find ─┬───▶─┴─ xargs ─┬───▶─┴─ shell ─┬───▶─┴─ terminal
+  echo ─┬───▶─┴─ xargs ─┬───▶─┴─ shell ─┬───▶─┴─ terminal
         │                │                │
 stdout ─╯        stdout ─╯        stdout ─╯
 ```
@@ -117,17 +123,17 @@ keyboard ─┬───▶─┴─ shell ─┬───▶─┴─ cat ─�
   stdout ─╯        stdout ─╯      stdout ─╯        stdout ─╯
 ```
 
-- `boop\n` is sent from my keyboard to `cat` via `stdin`
+- keyboard sends `boop\n` to `cat` via `stdin`
 - `cat` forwards `stdin` to `stdout`
-- my terminal is connected to `stdout`, so `boop` appears on my screen twice
+- the shell forwards stdout to the terminal, so `howdy` appears on my screen
 
 This is incredibly powerful... in _theory_. In _practice_ it's a wilderness, because streams are unstructured.
 You're not sending text through streams, you're sending bytes, since text would
 imply encoding.
 
 Do I mean encoding:
-- in a text sense: are these bytes encoded in Windows-1250 or Shift JIS?
-- in a data format sense: are these bytes JSON or MessagePack?
+- in a textual sense: are these bytes encoded in Windows-1250 or Shift JIS?
+- in a structural sense: are these bytes JSON or MessagePack?
 
 Both! In practice, lacking a standard for structuring data means relying on
 guessing character encodings and ad-hoc conventions. Please enjoy this [colourful
@@ -137,7 +143,7 @@ have a feeling POSIX is not their favourite standard.
 > If you hear "plain-text" used unironically please scold the prepetrator on my behalf.
 > Text is `(bytes, encoding)`, omitting encoding means you just have bytes. Thank you.
 
-Here's our previous example again:
+Here's another example:
 
 ```
 ❯ : ls
@@ -170,13 +176,39 @@ trying to wrangle any semblance of reliability from this cacophony of undercooke
 Unhandled errors don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
 Subshells are utterly broken. Evaluating undefined variables results in an empty string.
 
+
+In 2015, Steam for Linux [had a bug][steam] that nuked your root drive under certain conditions.
+How did this happen, you ask? A shell script, of course:
+
+```sh
+# figure out the absolute path to the script being run a bit
+# non-obvious, the ${0%/*} pulls the path out of $0, cd's into the
+# specified directory, then uses $PWD to figure out where that
+# directory lives - and all this in a subshell, so we don't affect
+# $PWD
+STEAMROOT="$(cd "${0%/*}" && echo $PWD)"
+[...]
+# Scary!
+rm -rf "$STEAMROOT/"*
+```
+
+As previously mentioned, undefined variables are expanded to empty string, and
+in certain situations `$STEAMROOT` happens to be undefined. So, this is what _actually_ happens:
+
+```sh
+rm -rf /*
+```
+
+Oh no, it's busted. Hope you had backups!
+
+
+### Infernal fortress of suffering
+
 Do you know how to spot a ~~traumatised~~ experienced shell programmer? It's easy! A
 word of power exists which, upon being spoken, will cause severe psyche damage to all
 shell programmers in the vicinity.
 
 > To set the mood, start playing [this background music][ash lake], then come back to this article.
-
-### Infernal fortress of suffering
 
 Okay, deep breaths... the word of power is "IFS". The IFS (internal field seperator) is
 a value controlling how the shell handles word spliting.
@@ -217,9 +249,7 @@ Let's try running it!
 4.0K    up
 ```
 
-Hmm... it _seems_ to work?
-
-For no particular reason, let's add a filename containing _spaces_:
+Hmm... it _seems_ to work? For no particular reason, let's add a filename containing _spaces_:
 
 ```
 ❯ touch "can't wake up"
@@ -236,7 +266,7 @@ du: cannot access 'wake': No such file or directory
 du: cannot access 'up': No such file or directory
 ```
 
-Oh no, it's busted. The workaround is to _always_ quote variables (and string literals).
+Oh no, it's busted. The workaround is to _always_ quote variables (and string literals):
 
 ```sh
 for FILE in *; do
@@ -258,13 +288,12 @@ shell scripts often collapse like a bridge made of popsicle sticks when presente
 with a file containing spaces? Now you know!
 
 If you're truly unhinged, you can leverage the IFS to perform rudimentary parsing.
-I would _strongly_ advise against it, take a minute to read through this incredibly well-written
-[Stack Overflow answer][bash_tokenize_string] regarding how to tokenize strings.
+However, I would _strongly_ advise against it. Take a minute to read through this
+[meticulous Stack Overflow answer][bash_tokenize_string] regarding string tokenization.
 Of the nine solutions
 presented, eight were incorrect (that's 88.8%!), all in incredibly subtle ways.
 Do you feel it now—the torment of being unable to accomplish basic programming tasks in shell scripts?
-Are you beginning to understand _why_ this godforsaken tool makes me so irrationally upset?!
-
+Are you beginning to understand _why_ this godforsaken language makes me so irrationally upset?!
 
 <!-- ## Section about how fucked quotes are -->
 ### The only winning move is not to play
@@ -452,6 +481,7 @@ Powershell is not my favourite language.<sup>[\[1\]]</sup>
 [stdout]: https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)
 [locale]: https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe
 [mpv]: https://github.com/mpv-player/mpv
+[steam]: https://github.com/ValveSoftware/steam-for-linux/issues/3671
 
 
 [\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
