@@ -157,7 +157,13 @@ Here's another example:
 xargs: unmatched single quote; by default quotes are special to xargs unless you use the -0 option
 ```
 
-As you can see, our pipeline breaks because the filename contains a quote. This is fine,
+Oh no, it's busted.
+
+{{
+    figure(src="xkcd-234.png", caption="[Escape artist](https://www.xkcd.com/234)")
+}}
+
+Our pipeline breaks because the filename contains a quote. This is fine,
 since filenames obviously _never_ contain quotes. Here's one solution, tell both
 `find` and `xargs` to use an ASCII `NUL` byte as the delimiter:
 

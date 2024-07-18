@@ -6,3 +6,5 @@
 /public
 /static/processed_images
 /themes
+# experiments
+/playground
