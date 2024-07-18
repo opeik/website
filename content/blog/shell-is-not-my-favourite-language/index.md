@@ -184,7 +184,7 @@ Subshells are utterly broken. Evaluating undefined variables results in an empty
 
 
 In 2015, Steam for Linux [had a bug][steam] that nuked your root drive under certain conditions.
-How did this happen, you ask? A shell script, of course:
+How did this happen, you ask? It was a shell script:
 
 ```sh
 # figure out the absolute path to the script being run a bit
@@ -193,7 +193,6 @@ How did this happen, you ask? A shell script, of course:
 # directory lives - and all this in a subshell, so we don't affect
 # $PWD
 STEAMROOT="$(cd "${0%/*}" && echo $PWD)"
-[...]
 # Scary!
 rm -rf "$STEAMROOT/"*
 ```
@@ -209,9 +208,9 @@ Oh no, it's busted.
 
 ### Infernal fortress of suffering
 
-Do you know how to spot a ~~traumatised~~ experienced shell programmer? It's easy! A
-word of power exists which, upon being spoken, will cause severe psyche damage to all
-shell programmers in the vicinity.
+Do you know how to spot an ~~traumatised~~ experienced shell programmer? It's easy! A
+word of power exists which, upon being uttered, will cause immediate and severe psyche
+damage to all shell programmers in the vicinity.
 
 > To set the mood, start playing [this background music][ash lake], then come back to this article.
 
@@ -242,8 +241,8 @@ done
 ╰───┴──────┴──────┴──────┴──────────────╯
 ```
 
-> Readers with an understanding of POSIX shell have likely already begun involuntarily
-> clenching. It's too late now, you have become victim to the shell.
+> Readers versed in shell have likely already begun involuntarily clenching.
+> It's too late now. All you can do is watch helplessly while all that you love burns.
 
 Let's try running it!
 
@@ -405,7 +404,7 @@ The conniption induced by this behaviour
 made me vividly recall my past POSIX shell trauma, which is _generally_ something to
 be avoided when designing software.
 
-How do we solve this? Well, if you'd read the docs properly you _utter buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're _supposed_ to do:
+How do we solve this? Well, if you'd read the docs properly you _absolute buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're _supposed_ to do:
 
 ```powershell
 Start-Process ... -ArgumentList (,$args)

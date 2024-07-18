@@ -1,14 +1,23 @@
 {
     "cSpell.words": [
+        "boop",
         "Cachix",
         "CNAME",
+        "howdy",
         "mkdir",
         "numtide",
+        "nushell",
+        "opeik",
+        "pinfo",
         "pname",
-        "stikic"
+        "POSIX",
+        "stikic",
+        "vsync",
+        "xkcd"
     ],
     "explorer.fileNesting.patterns": {
         "flake.nix": "flake.lock",
         "README.md": "LICENSE.md",
-    }
+    },
+    "cSpell.language": "en,en-GB"
 }
