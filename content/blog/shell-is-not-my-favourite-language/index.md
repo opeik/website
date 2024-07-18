@@ -86,99 +86,6 @@ this was a good idea? After wracking my brain, the _only_ justification for its
 inclusion is _maybe_ to accommodate systems with so little storage
 that splitting utilities into separate files would be convenient.
 
-<!-- write a section about the IFS here -->
-
-### Sisyphean-oriented programming
-
-Don't get me started about error handling. Praying nothing goes wrong is a better use of your time than
-trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
-Unhandled errors don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
-Subshells are utterly broken. Evaluating undefined variables results in an empty string.
-
-Do you know how to spot a ~~traumatised~~ experienced shell programmer? It's easy! A
-word of power exists which, upon being spoken, will cause severe psyche damage to all
-shell programmers in the vicinity.
-
-> To set the mood, start playing [this background music][ash lake], then come back to this article.
-
-### Infernal fortress of suffering
-
-Okay, deep breaths... the word of power is "IFS". The IFS (internal field seperator) is
-a value controlling how the shell handles word spliting.
-The semantics are _insane_—an example is _mandatory_ for even beginning to envision
-the crimes contained within those three miserable letters.
-
-Let's write a shell script that prints the size of all files in the current directory:
-
-```sh
-for FILE in *; do
-    du -h $FILE
-done
-```
-
-...and he's what our directory looks like:
-
-```
-❯ touch wake me up
-❯ ls
-╭───┬──────┬──────┬──────┬──────────────╮
-│ # │ name │ type │ size │   modified   │
-├───┼──────┼──────┼──────┼──────────────┤
-│ 0 │ wake │ file │  3 B │ a minute ago │
-│ 1 │ me   │ file │  6 B │ a minute ago │
-│ 2 │ up   │ file │  9 B │ a minute ago │
-╰───┴──────┴──────┴──────┴──────────────╯
-```
-
-> Readers with a cursory understanding of POSIX shell have already begun involuntarily
-> clenching their body.
-
-Let's try running it!
-
-```
-❯ ../ifs.sh
-4.0K    wake
-4.0K    me
-4.0K    up
-```
-
-Hmm... it _seems_ to work?
-
-For no particular reason, let's add a filename containing _spaces_:
-
-```
-❯ touch "can't wake up"
-❯ ls
-╭───┬───────────────┬──────┬───────┬──────────╮
-│ # │     name      │ type │ size  │ modified │
-├───┼───────────────┼──────┼───────┼──────────┤
-│ 0 │ can't wake up │ file │ 666 B │ now      │
-╰───┴───────────────┴──────┴───────┴──────────╯
-
-❯ ../ifs.sh
-du: cannot access "can't": No such file or directory
-du: cannot access 'wake': No such file or directory
-du: cannot access 'up': No such file or directory
-```
-
-Oh no, it's busted. The workaround is to _always_ quote variables and string literals.
-
-As for why, recall that IFS controls how word splitting is performed.
-Given the [default IFS][default_ifs] `' \t\n'` (that's space, tab, newline),
-`can't wake up` is being split into three words: `can't`, `wake`, `up`.
-This happens transparently (often without the programmer realising),
-and causes one filename to be treated _as if_ it was three. Have you ever wondered why
-shell scripts often collapse like a bridge made of popsicle sticks when presented
-with a file containing spaces? Now you know!
-
-If you're truly unhinged, you can leverage the IFS to perform rudimentary parsing.
-I would _strongly_ advise against it, take a minute to read through this incredibly well-written
-[Stack Overflow answer][bash_tokenize_string] regarding how to tokenize strings.
-Of the nine solutions
-presented, eight were incorrect (that's 88.8%!), all in incredibly subtle ways.
-Do you feel it now—the torment of being unable to accomplish basic programming in shell scripts?
-Are you beginning to understand _why_ this tool makes me irrationally upset?!
-
 ### Byte streams are the `Any` of UNIX
 
 POSIX shell lets you combine multiple commands together to form a "pipeline". This is accomplished
@@ -218,15 +125,17 @@ This is incredibly powerful... in _theory_. In _practice_ it's a wilderness, bec
 You're not sending text through streams, you're sending bytes, since text would
 imply encoding.
 
-> If you hear anyone use the term "plain-text" unironically please scold
-> them on my behalf. Text with no encoding is just bytes. Thank you.
-
 Do I mean encoding:
 - in a text sense: are these bytes encoded in Windows-1250 or Shift JIS?
 - in a data format sense: are these bytes JSON or MessagePack?
 
 Both! In practice, lacking a standard for structuring data means relying on
-guessing character encodings and ad-hoc conventions.
+guessing character encodings and ad-hoc conventions. Please enjoy this [colourful
+account][locale] from an [MPV][mpv] maintainer regarding how POSIX handles locales. I
+have a feeling POSIX is not their favourite standard.
+
+> If you hear "plain-text" used unironically please scold the prepetrator on my behalf.
+> Text is `(bytes, encoding)`, omitting encoding means you just have bytes. Thank you.
 
 Here's our previous example again:
 
@@ -243,17 +152,119 @@ xargs: unmatched single quote; by default quotes are special to xargs unless you
 ```
 
 As you can see, our pipeline breaks because the filename contains a quote. This is fine,
-since filenames obviously _never_ contain quotes.
-
-Here's one solution, tell both `find` and `xargs` to use an ASCII `NUL` byte as the delimiter:
+since filenames obviously _never_ contain quotes. Here's one solution, tell both
+`find` and `xargs` to use an ASCII `NUL` byte as the delimiter:
 
 ```
 ❯ find . -type f -print0 | xargs -0 ls -al
 -rw-r--r-- 1 opeik staff 666 Jul 17 21:48 "./can't wake up"
 ```
 
-This is one of the nicer solutions. I hope whatever you're piping `find` into supports
+This is one of the _nicer_ solutions. I hope whatever you're piping `find` into supports
 it, or you'll have to add _yet more_ slop to handle it!
+
+### Sisyphean-oriented programming
+
+Don't get me started about error handling. Praying nothing goes wrong is a better use of your time than
+trying to wrangle any semblance of reliability from this cacophony of undercooked and mismatched ideas.
+Unhandled errors don't stop the script. Pipelines mask errors by always returning the exit code of the last command.
+Subshells are utterly broken. Evaluating undefined variables results in an empty string.
+
+Do you know how to spot a ~~traumatised~~ experienced shell programmer? It's easy! A
+word of power exists which, upon being spoken, will cause severe psyche damage to all
+shell programmers in the vicinity.
+
+> To set the mood, start playing [this background music][ash lake], then come back to this article.
+
+### Infernal fortress of suffering
+
+Okay, deep breaths... the word of power is "IFS". The IFS (internal field seperator) is
+a value controlling how the shell handles word spliting.
+The semantics are _insane_—an example is required to truly envision
+the depravity contained within those three miserable letters.
+
+Let's write a shell script that prints the size of all files in the current directory:
+
+```sh
+for FILE in *; do
+    du -h $FILE
+done
+```
+
+...and he's what our directory looks like:
+
+```
+❯ touch wake me up
+❯ ls
+╭───┬──────┬──────┬──────┬──────────────╮
+│ # │ name │ type │ size │   modified   │
+├───┼──────┼──────┼──────┼──────────────┤
+│ 0 │ wake │ file │  3 B │ a minute ago │
+│ 1 │ me   │ file │  6 B │ a minute ago │
+│ 2 │ up   │ file │  9 B │ a minute ago │
+╰───┴──────┴──────┴──────┴──────────────╯
+```
+
+> Readers with an understanding of POSIX shell have likely already begun involuntarily
+> clenching. It's too late now, you have become victim to the shell.
+
+Let's try running it!
+
+```
+❯ ../ifs.sh
+4.0K    wake
+4.0K    me
+4.0K    up
+```
+
+Hmm... it _seems_ to work?
+
+For no particular reason, let's add a filename containing _spaces_:
+
+```
+❯ touch "can't wake up"
+❯ ls
+╭───┬───────────────┬──────┬───────┬──────────╮
+│ # │     name      │ type │ size  │ modified │
+├───┼───────────────┼──────┼───────┼──────────┤
+│ 0 │ can't wake up │ file │ 666 B │ now      │
+╰───┴───────────────┴──────┴───────┴──────────╯
+
+❯ ../ifs.sh
+du: cannot access "can't": No such file or directory
+du: cannot access 'wake': No such file or directory
+du: cannot access 'up': No such file or directory
+```
+
+Oh no, it's busted. The workaround is to _always_ quote variables (and string literals).
+
+```sh
+for FILE in *; do
+    du -h "$FILE"
+done
+```
+
+```
+❯ ../ifs.sh
+4.0K    can't wake up
+```
+
+As for why, recall that IFS controls how word splitting is performed.
+Given the [default IFS][default_ifs] `' \t\n'` (that's space, tab, newline),
+`can't wake up` is being split into three words: `can't`, `wake`, `up`.
+This happens transparently (often without the programmer realising),
+and causes one filename to be treated _as if_ it was three. Have you ever wondered why
+shell scripts often collapse like a bridge made of popsicle sticks when presented
+with a file containing spaces? Now you know!
+
+If you're truly unhinged, you can leverage the IFS to perform rudimentary parsing.
+I would _strongly_ advise against it, take a minute to read through this incredibly well-written
+[Stack Overflow answer][bash_tokenize_string] regarding how to tokenize strings.
+Of the nine solutions
+presented, eight were incorrect (that's 88.8%!), all in incredibly subtle ways.
+Do you feel it now—the torment of being unable to accomplish basic programming tasks in shell scripts?
+Are you beginning to understand _why_ this godforsaken tool makes me so irrationally upset?!
+
 
 <!-- ## Section about how fucked quotes are -->
 ### The only winning move is not to play
@@ -322,7 +333,8 @@ Oh, by the way, both methods are [finnicky](https://stackoverflow.com/a/53575932
 
 ### Wait, why's my array being coerced?
 
-I wasn't able to get either line break methods working so let's sidestep this nonsense by defining the arguments beforehand.
+I wasn't able to get either line break methods working, so let's sidestep this nonsense
+by defining the arguments beforehand.
 
 ```powershell
 # You can define arrays like this:
@@ -341,17 +353,21 @@ I wasn't able to get either line break methods working so let's sidestep this no
 
 It's a little awkward, but I can deal with it.
 
-After inspecting the [`Start-Process`] docs, we find that  `-ArgumentList` expects a `string[]`. Easy enough, any sane person would then try to do this:
+After inspecting the [`Start-Process`] docs, we find that  `-ArgumentList` expects a `string[]`.
+Luckily for us, `args` is also a `string[]`! Given our variable and the parameter
+have _the same type_, any sane person would expect this to work:
 
 ```powershell
-Start-Process ... -ArgumentList $args
+Start-Process -ArgumentList $args # ...
 ```
 
-...but that doesn't work.
+...but it doesn't work.
 
-It substitutes `$args` with the first element of the array. The conniption induced by this behaviour
-made me vividly recall my past POSIX shell trauma. Exposing past trauma in your users is generally
-something to be avoided.
+Worse still, the command _succeeds_ but behaves like you don't expect: it
+substitutes `$args` with the first element of the array.
+The conniption induced by this behaviour
+made me vividly recall my past POSIX shell trauma, which is _generally_ something to
+be avoided when designing software.
 
 How do we solve this? Well, if you'd read the docs properly you _utter buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're _supposed_ to do:
 
@@ -434,6 +450,8 @@ Powershell is not my favourite language.<sup>[\[1\]]</sup>
 [bash_tokenize_string]: https://stackoverflow.com/questions/10586153/how-to-split-a-string-into-an-array-in-bash/45201229#45201229
 [stdin]: https://en.wikipedia.org/wiki/Standard_streams#Standard_input_(stdin)
 [stdout]: https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)
+[locale]: https://github.com/mpv-player/mpv/commit/1e70e82baa9193f6f027338b0fab0f5078971fbe
+[mpv]: https://github.com/mpv-player/mpv
 
 
 [\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
