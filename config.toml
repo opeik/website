@@ -1,6 +1,7 @@
 # Zola configuration, see: https://www.getzola.org/documentation/getting-started/configuration
 base_url = "https://stikić.com"
 title = "Sandro Stikić"
+description = "Welcome to my webzone! Engineering, hobbies, and more~"
 theme = "terminimal"
 default_language = "en"
 compile_sass = true
@@ -12,6 +13,7 @@ highlight_code = true
 highlight_theme = "monokai-pro-terminimal"
 extra_syntaxes_and_themes = ["themes/terminimal/highlight_themes"]
 external_links_target_blank = true
+bottom_footnotes = true
 
 # Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
 [extra]

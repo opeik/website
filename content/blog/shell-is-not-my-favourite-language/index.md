@@ -41,7 +41,7 @@ _stayed_ dead. Unfortunately, I'm lacking a weapon with sacred affinity, so I'll
 have to settle for asking nicely.
 
 {{
-    figure(src="environmental storytelling.jpg", caption="Environmental storytelling",
+    figure(src="environmental storytelling.jpg", caption="Environmental storytelling.",
     alt="A variant of the ancient Dead Space 'turn off vsync' meme. The protagonist, Isaac Clarke, stands in front a wall with 'set -euo pipefall' scrawled in blood.")
 }}
 
@@ -86,6 +86,10 @@ this was a good idea? After wracking my brain, the _only_ justification for its
 inclusion is _maybe_ to accommodate systems with so little storage
 that splitting utilities into separate files would be convenient.
 
+{{
+    figure(src="lawyers.jpg", caption="Can you imagine a world without shell scripts?", alt="Simpsons season 4, episode 21. Shot of Lionel Hutz contemplating a world without lawyers.")
+}}
+
 ### Byte streams are the `Any` of UNIX
 
 POSIX shell lets you combine multiple commands together to form a "pipeline". This is accomplished
@@ -99,7 +103,7 @@ howdy
 - `echo` sends `filename\n` to `stdout`
 - `xargs` receives `filename\n` from `stdin` due to the pipe
 - `xargs` runs `cat filename`, sending `howdy\n` (the contents of `filename`) to `stdout`
-- the shell forwards stdout to the terminal, so `howdy` appears on my screen
+- the shell forwards `stdout` to the terminal, so `howdy` appears on my screen
 
 ```
                ╭─ stdin         ╭─ stdin         ╭─ stdin
@@ -125,7 +129,7 @@ keyboard ─┬───▶─┴─ shell ─┬───▶─┴─ cat ─�
 
 - keyboard sends `boop\n` to `cat` via `stdin`
 - `cat` forwards `stdin` to `stdout`
-- the shell forwards stdout to the terminal, so `howdy` appears on my screen
+- the shell forwards `stdout` to the terminal, so `howdy` appears on my screen
 
 This is incredibly powerful... in _theory_. In _practice_ it's a wilderness, because streams are unstructured.
 You're not sending text through streams, you're sending bytes, since text would
@@ -159,10 +163,6 @@ xargs: unmatched single quote; by default quotes are special to xargs unless you
 
 Oh no, it's busted.
 
-{{
-    figure(src="xkcd-234.png", caption="[Escape artist](https://www.xkcd.com/234)")
-}}
-
 Our pipeline breaks because the filename contains a quote. This is fine,
 since filenames obviously _never_ contain quotes. Here's one solution, tell both
 `find` and `xargs` to use an ASCII `NUL` byte as the delimiter:
@@ -174,6 +174,26 @@ since filenames obviously _never_ contain quotes. Here's one solution, tell both
 
 This is one of the _nicer_ solutions. I hope whatever you're piping `find` into supports
 it, or you'll have to add _yet more_ slop to handle it!
+
+{{
+    figure(src="xkcd-234.png", caption="[Escape artist](https://www.xkcd.com/234)",
+alt="[Cueball sits before a computer on a desk while another man stands behind him.]
+Man: I was fascinated by locks as a kid. I loved how they turned information and patterns into physical strength.
+Cueball: Why does my script keep dying?
+
+[Closeup on Cueball sitting at the computer.]
+Man: And a lock invites you to try and open it. It's the hacker instinct. Only your ignorance stands in the way.
+Cueball: Wait it's passing bad strings.
+
+[Returns to the two shot of both men.]
+Man: I admired Harry Houdini, how he could open any lock and free himself from any restraint.
+Cueball: Ah - Bash is parsing the spaces.
+
+Man: Sure some of it was fakery and showmanship. But I still wonder how he so consistently escaped handcuffs.
+Cueball: Backslashes?
+Man: Huh?
+Cueball: Never mind.")
+}}
 
 ### Sisyphean-oriented programming
 
@@ -193,6 +213,7 @@ How did this happen, you ask? It was a shell script:
 # directory lives - and all this in a subshell, so we don't affect
 # $PWD
 STEAMROOT="$(cd "${0%/*}" && echo $PWD)"
+
 # Scary!
 rm -rf "$STEAMROOT/"*
 ```
@@ -300,6 +321,10 @@ Of the nine solutions
 presented, eight were incorrect (that's 88.8%!), all in incredibly subtle ways.
 Do you feel it now—the torment of being unable to accomplish basic programming tasks in shell scripts?
 Are you beginning to understand _why_ this godforsaken language makes me so irrationally upset?!
+
+{{
+    figure(src="marie.jpg", caption="POSIX was a mistake.", alt="Shot of Marie Kondo captioned: 'this does not spark joy'.")
+}}
 
 <!-- ## Section about how fucked quotes are -->
 ### The only winning move is not to play
@@ -489,11 +514,7 @@ Powershell is not my favourite language.<sup>[\[1\]]</sup>
 [mpv]: https://github.com/mpv-player/mpv
 [steam]: https://github.com/ValveSoftware/steam-for-linux/issues/3671
 
-
 [\[1\]]: https://github.com/gco/xee/blob/4fa3a6d609dd72b8493e52a68f316f7a02903276/XeePhotoshopLoader.m#L108-L136C6
-
 [\[2\]]: https://stackoverflow.com/a/8762068
-
 [\[3\]]: https://youtube.com/clip/UgkxyeayQ81-ecG1lQPEL9NzBMjYE-vUOM85?si=U5aQdwM6iIDR7OQd
-
 [\[4\]]: https://youtube.com/clip/UgkxZUlGRFYzFSMNqgPV54RjNEZWmxsPdMYO?si=Kx18qFwAg7rZH3zh
