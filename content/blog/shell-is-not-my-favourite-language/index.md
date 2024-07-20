@@ -323,7 +323,7 @@ Do you feel it now—the torment of being unable to accomplish basic programming
 Are you beginning to understand _why_ this godforsaken language makes me so irrationally upset?!
 
 {{
-    figure(src="marie.jpg", caption="POSIX was a mistake.", alt="Shot of Marie Kondo captioned: 'this does not spark joy'.")
+    figure(src="marie.jpg", caption="POSIX was a mistake.", alt="Shot of Marie Kondo captioned: 'this one does not spark joy'.")
 }}
 
 <!-- ## Section about how fucked quotes are -->
@@ -432,10 +432,12 @@ be avoided when designing software.
 How do we solve this? Well, if you'd read the docs properly you _absolute buffoon_, you'd have noticed the [dedicated section](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting?view=powershell-7.4#using-the-argumentlist-parameter) explaining this footgun. Here's what you're _supposed_ to do:
 
 ```powershell
-Start-Process ... -ArgumentList (,$args)
+Start-Process -ArgumentList (,$args) # ...
 ```
 
 > In this example, `$args` is wrapped in an array so that the entire array is passed to the script block as a single object.
+
+Very intuitive, thank you Powershell!
 
 <!-- Powershell takes all that -->
 
