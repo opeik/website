@@ -5,6 +5,7 @@ description = "Welcome to my webzone! Engineering, hobbies, and more~"
 theme = "terminimal"
 default_language = "en"
 compile_sass = true
+# Enable atom feed generation.
 generate_feed = true
 taxonomies = [{ name = "tags" }]
 
@@ -12,7 +13,9 @@ taxonomies = [{ name = "tags" }]
 highlight_code = true
 highlight_theme = "monokai-pro-terminimal"
 extra_syntaxes_and_themes = ["themes/terminimal/highlight_themes"]
+# Set all external links to open in a new window/tab.
 external_links_target_blank = true
+# Use github style footnotes, with backreferences at the bottom of pages.
 bottom_footnotes = true
 
 # Theme settings, see: https://github.com/pawroman/zola-theme-terminimal?tab=readme-ov-file#configuration
@@ -29,7 +32,11 @@ author = "Sandro Stikić"
 favicon = "/favicon.png"
 favicon_mimetype = "image/png"
 post_view_navigation_prompt = "Read more?"
+# Method used for generating page titles, `{page_title} | {blog_title}`.
 page_titles = "combined"
+# Path for fallback embed preview image. Recommended 1200x628.
+default_og_image = "static/favicon.png"
+
 menu_items = [
     { name = "blog", url = "$BASE_URL" },
     { name = "tags", url = "$BASE_URL/tags" },

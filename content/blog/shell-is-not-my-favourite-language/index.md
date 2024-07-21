@@ -1,9 +1,14 @@
 +++
 title = "Shell is not my favourite language"
+description = "A journey through my experiences with POSIX shell and Powershell."
 date = "2024-07-14"
+
 
 [taxonomies]
 tags = ["rant", "powershell", "posix", "shell"]
+
+[extra]
+og_image = "banner.png"
 +++
 
 Powershell wasted 10 hours of my life, so I was compelled to write this self-therapy session
@@ -73,8 +78,8 @@ executables, which checks out according to [POSIX][posix_test]:
 
 > The `test` and `[` utilities may be implemented as a single linked utility which examines the basename of the zeroth command line argument to determine whether to behave as the test or `[` variant.
 
-In any other context, this would be reviled as the affront to computing that it is. But since
-it was standardised _\[checks watch\]_ 38 years ago, it flies under the radar. I have a feeling the reception would have been different if `shell.js` tried to pull this.
+In any other context, this would be reviled as the affront to computing that it is, but since
+it was standardised _\[checks watch\]_ 38 years ago it flies under the radar. I have a feeling the reception would have been different if `shell.js` tried to pull this.
 
 Also, I lied—they're only _sometimes_ executables! [As per POSIX](posix_builtin):
 
@@ -129,7 +134,7 @@ keyboard ─┬───▶─┴─ shell ─┬───▶─┴─ cat ─�
 
 - keyboard sends `boop\n` to `cat` via `stdin`
 - `cat` forwards `stdin` to `stdout`
-- the shell forwards `stdout` to the terminal, so `howdy` appears on my screen
+- the shell forwards `stdout` to the terminal, so `boop` appears on my screen _twice_
 
 This is incredibly powerful... in _theory_. In _practice_ it's a wilderness, because streams are unstructured.
 You're not sending text through streams, you're sending bytes, since text would
@@ -194,6 +199,8 @@ Cueball: Backslashes?
 Man: Huh?
 Cueball: Never mind.")
 }}
+
+### Who are you quoting
 
 ### Sisyphean-oriented programming
 
@@ -350,7 +357,7 @@ One _massive_ advantage Powershell has over POSIX shell is the shift away from u
 piping one command to another, structured .NET objects are passed instead. I cannot stress enough
 how much of an improvement is, being forced to use byte streams makes me feel like neanderthal.
 
-However, it is with regret, my dear reader, that I inform you Powershell is just as bad in a variety
+It is with regret, my dear reader, that I inform you Powershell is just as bad in a variety
 of new and exciting ways. The rest of the post details my first-time user experience with Powershell.
 
 ### Running a program
