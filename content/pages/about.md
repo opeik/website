@@ -1,5 +1,6 @@
 +++
 title = "about me"
+description = "Learn more about yours truly."
 path = "about"
 +++
 

@@ -1,0 +1,6 @@
+{% extends "terminimal/templates/tags/single.html" %}
+
+{%- block title -%}
+{% set title = "tag: " ~ term.name %}
+{{ title_macros::title(page_title=title, main_title=config.title) }}
+{%- endblock -%}

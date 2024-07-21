@@ -1,5 +1,6 @@
 +++
 title = "macOS HomeKit automation"
+description = "How I power my speakers automagically."
 date = "2022-08-20"
 
 [taxonomies]
