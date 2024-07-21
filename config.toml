@@ -34,8 +34,8 @@ favicon_mimetype = "image/png"
 post_view_navigation_prompt = "Read more?"
 # Method used for generating page titles, `{page_title} | {blog_title}`.
 page_titles = "combined"
-# Path for fallback embed preview image. Recommended 1200x628.
-default_og_image = "static/favicon.png"
+# Path for fallback embed preview image (1200x628), relative to `/static`.
+default_og_image = "favicon.png"
 
 menu_items = [
     { name = "blog", url = "$BASE_URL" },
