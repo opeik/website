@@ -44,7 +44,7 @@ jobs:
           cp --recursive --dereference --no-preserve=mode,ownership result public
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Upload website content
         uses: actions/upload-pages-artifact@v3
