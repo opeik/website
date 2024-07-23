@@ -1,0 +1,8 @@
+{% extends "terminimal/templates/404.html" %}
+
+{% block content %}
+<div class="post">
+  <h1 class="post-title">{% block heading %}lost?{% endblock heading %}</h1>
+  <p>{% block message %}this page does not exist.{% endblock message %}</p>
+</div>
+{% endblock content %}
