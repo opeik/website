@@ -1,7 +1,7 @@
 # Zola configuration, see: https://www.getzola.org/documentation/getting-started/configuration
 base_url = "https://stikić.com"
-title = "Sandro Stikić"
-description = "Welcome to my webzone! Engineering, hobbies, and more~"
+title = "studio opaque"
+description = "personal webzone of sandro stikić"
 theme = "terminimal"
 default_language = "en"
 compile_sass = true
@@ -27,7 +27,7 @@ mastodon_url = "https://hachyderm.io/@opeik"
 font = "iosevka"
 accent_color = "purple"
 background_color = "purple"
-logo_text = "Sandro Stikić"
+logo_text = "studio opaque"
 author = "Sandro Stikić"
 favicon = "/favicon.png"
 favicon_mimetype = "image/png"

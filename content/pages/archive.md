@@ -1,6 +1,6 @@
 +++
 path = "archive"
 title = "archive"
-description = "All posts"
+description = "all blog posts"
 template = "archive.html"
 +++
