@@ -6,8 +6,10 @@ theme = "terminimal"
 default_language = "en"
 compile_sass = true
 # Enable atom feed generation.
-generate_feed = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
 taxonomies = [{ name = "tags" }]
+build_search_index = true
 
 [markdown]
 highlight_code = true
@@ -50,3 +52,6 @@ repo = "opeik/website"
 post_map = "pathname"
 label = "utterances"
 theme = "github-dark-orange"
+
+[search]
+index_format = "elasticlunr_json"

@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1721622093,
-        "narHash": "sha256-iQ+quy3A1EKeFyLyAtjhgSvZHH7r+xybXZkxMhasN4I=",
+        "lastModified": 1721782431,
+        "narHash": "sha256-UNDpwjYxNXQet/g3mgRLsQ9zxrbm9j2JEvP4ijF3AWs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "453402b94f39f968a7c27df28e060f69e4a50c3b",
+        "rev": "4f02464258baaf54992debfd010a7a3662a25536",
         "type": "github"
       },
       "original": {
@@ -16,11 +16,46 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1718428119,
+        "narHash": "sha256-WdWDpNaq6u1IPtxtYHHWpl5BmabtpmLnMAx0RdJ/vo8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e6cea36f83499eb4e9cd184c8a8e823296b50ad5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "rust-overlay": "rust-overlay",
         "utils": "utils",
         "zola-theme": "zola-theme"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1721873995,
+        "narHash": "sha256-HyFmp6rktJQMxG+BZEjcQoCFKMek855Cc/dQk2YDac0=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "33a7853f54f1797b029739297c4593bd96077c20",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "systems": {
@@ -59,11 +94,11 @@
     "zola-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1721711387,
-        "narHash": "sha256-6NmmzWqSl3H0mJyFlnq/E7RP95TMm4n08f6knsVeof8=",
+        "lastModified": 1721926914,
+        "narHash": "sha256-n6tkG2YTXtwD74nALJOSJrWMhJrFNiN2wGfevI7fdcY=",
         "owner": "opeik",
         "repo": "zola-theme-terminimal",
-        "rev": "763f9bc0dcd83d8660e234e52745a22d2b6e218c",
+        "rev": "75041ac5139e4b5f62fbd3646eaf64bd0acc3bf1",
         "type": "github"
       },
       "original": {

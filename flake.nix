@@ -3,6 +3,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # Nix package repository
     utils.url = "github:numtide/flake-utils"; # Flake utility functions
+    rust-overlay.url = "github:oxalica/rust-overlay";
     # Zola theme.
     zola-theme = {
       url = "github:opeik/zola-theme-terminimal";
@@ -15,19 +16,44 @@
     nixpkgs,
     utils,
     zola-theme,
+    rust-overlay,
   }:
     utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [(import rust-overlay)];
+      };
       theme = pkgs.stdenv.mkDerivation {
         name = "zola-theme-terminimal";
         src = zola-theme;
         installPhase = "cp -R . $out";
       };
       themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
+      rustPlatform = pkgs.makeRustPlatform {
+        cargo = pkgs.rust-bin.stable.latest.minimal;
+        rustc = pkgs.rust-bin.stable.latest.minimal;
+      };
+      zola-19 = pkgs.zola.override (old: {
+        rustPlatform =
+          old.rustPlatform
+          // {
+            buildRustPackage = args:
+              rustPlatform.buildRustPackage (args
+                // {
+                  version = "0.19.1";
+                  src = builtins.fetchGit {
+                    url = "https://github.com/getzola/zola";
+                    ref = "refs/tags/v0.19.1";
+                    rev = "041da029eedbca30c195bc9cd8c1acf89b4f60c0";
+                  };
+                  cargoHash = "sha256-Q2Zx00Gf89TJcsOFqkq0b4e96clv/CLQE51gGONZZl0=";
+                });
+          };
+      });
     in {
       packages = {
         # `nix run .#serve`
-        serve = pkgs.writeShellScriptBin "serve" "${pkgs.zola}/bin/zola serve --drafts";
+        serve = pkgs.writeShellScriptBin "serve" "${zola-19}/bin/zola serve --drafts";
 
         # `nix build .#website`
         website = pkgs.stdenv.mkDerivation {
@@ -44,7 +70,7 @@
               )
               path;
           };
-          buildInputs = with pkgs; [zola nodePackages_latest.prettier];
+          buildInputs = with pkgs; [zola-19 nodePackages_latest.prettier];
           configurePhase = ''
             mkdir --parents themes
             ln --symbolic ${theme} themes/${themeName}
@@ -70,8 +96,8 @@
 
       # `nix develop`
       devShell = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          zola
+        buildInputs = [
+          zola-19
           self.formatter.${system}
         ];
         shellHook = ''
