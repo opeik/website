@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1721821769,
-        "narHash": "sha256-PhmkdTJs2SfqKzSyDB74rDKp1MH4mGk0pG/+WqrnGEw=",
+        "lastModified": 1721949857,
+        "narHash": "sha256-DID446r8KsmJhbCzx4el8d9SnPiE8qa6+eEQOJ40vR0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d0907b75146a0ccc1ec0d6c3db287ec287588ef6",
+        "rev": "a1cc729dcbc31d9b0d11d86dc7436163548a9665",
         "type": "github"
       },
       "original": {
@@ -94,11 +94,11 @@
     "zola-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1721972364,
-        "narHash": "sha256-BC8uC/MECRYVtNQBHTY44CyiFooVAFKOw1ETLGWKwiU=",
+        "lastModified": 1722014336,
+        "narHash": "sha256-RbY3smwu1WkziGVj+9h70OzdIPdOOzVH3JvloevtEU0=",
         "owner": "opeik",
         "repo": "zola-theme-terminimal",
-        "rev": "635406b4b98b1d2b9f7cc3ad1cf0f119ff7a1ad7",
+        "rev": "143382df1ef55e3270a432f4cd2e07bfae7d4dd0",
         "type": "github"
       },
       "original": {
