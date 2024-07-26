@@ -200,7 +200,8 @@ Man: Huh?
 Cueball: Never mind.")
 }}
 
-### Who are you quoting
+<!-- ### Who are you quoting -->
+<!-- section about how fucked quotes are goes here -->
 
 ### Sisyphean-oriented programming
 

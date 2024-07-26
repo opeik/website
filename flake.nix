@@ -26,11 +26,14 @@
 
       # Our zola theme!
       theme = {
-        name = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme.src}/theme.toml")).name);
+        name = "terminimal";
         src = pkgs.stdenv.mkDerivation {
-          name = "zola-theme-terminimal";
+          name = theme.name;
           src = zola-theme;
-          installPhase = "cp --verbose --recursive . $out";
+          installPhase = ''
+            mkdir --parents $out/themes/${theme.name}
+            cp --verbose --recursive . $out/themes/${theme.name}
+          '';
         };
       };
 
@@ -78,13 +81,9 @@
               path;
           };
           configurePhase = ''
-            echo 'adding theme to `themes`...'
-            mkdir --parents themes
+            echo 'installing theme...'
             # Reset the file permissions since they'll be read-only from being in the Nix store.
-            cp --recursive --no-preserve=mode ${theme.src} themes/${theme.name}
-
-            echo 'sources:'
-            ${pkgs.tree}/bin/tree .
+            cp --recursive --no-preserve=mode "${theme.src}"/* .
           '';
           buildPhase = let
             version = pkgs.lib.strings.removeSuffix "-dirty" (self.rev or self.dirtyRev or "unknown");
@@ -95,7 +94,6 @@
             echo 'building website...'
             ${zola}/bin/zola build
 
-            ${pkgs.tree}/bin/tree public
             echo 'formatting output...'
             ${pkgs.nodePackages_latest.prettier}/bin/prettier --bracket-same-line true --write public
 
