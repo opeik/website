@@ -94,11 +94,11 @@
     "zola-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1721926914,
-        "narHash": "sha256-n6tkG2YTXtwD74nALJOSJrWMhJrFNiN2wGfevI7fdcY=",
+        "lastModified": 1721972364,
+        "narHash": "sha256-BC8uC/MECRYVtNQBHTY44CyiFooVAFKOw1ETLGWKwiU=",
         "owner": "opeik",
         "repo": "zola-theme-terminimal",
-        "rev": "75041ac5139e4b5f62fbd3646eaf64bd0acc3bf1",
+        "rev": "635406b4b98b1d2b9f7cc3ad1cf0f119ff7a1ad7",
         "type": "github"
       },
       "original": {
