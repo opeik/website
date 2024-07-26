@@ -26,7 +26,7 @@
       theme = pkgs.stdenv.mkDerivation {
         name = "zola-theme-terminimal";
         src = zola-theme;
-        installPhase = "cp -R . $out";
+        installPhase = "cp --verbose --recursive . $out";
       };
       themeName = pkgs.lib.toLower ((builtins.fromTOML (builtins.readFile "${theme}/theme.toml")).name);
       rustPlatform = pkgs.makeRustPlatform {
@@ -62,33 +62,37 @@
           src = builtins.path {
             path = ./.;
             name = "website-src";
-            filter = path: type:
-              (
-                x:
-                  builtins.any (file: pkgs.lib.hasSuffix file x) ["config.toml"]
-                  || builtins.any (dir: pkgs.lib.hasInfix dir x) ["content" "static" "templates"]
-              )
-              path;
+            # filter = path: type:
+            #   (
+            #     x:
+            #       builtins.any (file: pkgs.lib.hasSuffix file x) ["config.toml"]
+            #       || builtins.any (dir: pkgs.lib.hasInfix dir x) ["content" "static" "templates"]
+            #   )
+            #   path;
           };
           buildInputs = with pkgs; [zola-19 nodePackages_latest.prettier];
           configurePhase = ''
+            echo 'adding theme to `themes`...'
             mkdir --parents themes
-            ln --symbolic ${theme} themes/${themeName}
+            cp --recursive ${theme} themes/${themeName}
+
+            echo 'sources:'
+            ${pkgs.tree}/bin/tree .
           '';
           buildPhase = let
             version = pkgs.lib.strings.removeSuffix "-dirty" (self.rev or self.dirtyRev or "unknown");
           in ''
-            # Add git revision to the config for inclusion in the footers.
+            echo 'adding version to `config.toml`'
             sed -i '/\[extra\]/a version = "${version}"' config.toml
 
-            # Build the website!
+            echo 'building website...'
             zola build
 
-            # Format the output for ease of debugging.
-            prettier --bracket-same-line true --write public
+            echo 'formatting output...'
+            prettier --log-level debug --bracket-same-line true --write public
 
-            # Templates tend to create a lot of empty lines, strip them.
-            find public -type f -name '*.html' -exec sed -i '/^$/d' {} +
+            echo 'stripping empty lines from output html...'
+            find public -print -type f -name '*.html' -exec sed -i '/^$/d' {} +
           '';
           installPhase = "cp --recursive public $out";
         };
