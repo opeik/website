@@ -6,6 +6,11 @@ description = "unicode wall of shame"
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
 the problem by refusing Unicode:
 
+## [Discord](https://discord.com)
+### 2024-12-01
+
+{{ figure(src="discord.png", caption="I understand IDN homograph attacks exist, but this is not a solution.") }}
+
 ## [Mouser](https://au.mouser.com)
 ### 2024-12-01
 
@@ -34,6 +39,6 @@ the problem by refusing Unicode:
 ## [RAC](https://rac.com.au/)
 ### 2022-01-20
 
-{{ figure(src="rac.png", caption="Please enter a valid last name") }}
+{{ figure(src="rac.png", caption="Please enter a valid last name.") }}
 
 Inspired by [Jan Stępień](https://wtf-8.stępień.com/)'s similar wall of shame.
