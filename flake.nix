@@ -1,7 +1,7 @@
 # Nix flake, see: https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05"; # Nix package repository
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11"; # Nix package repository
     utils.url = "github:numtide/flake-utils"; # Flake utility functions
     rust-overlay.url = "github:oxalica/rust-overlay";
     # Zola theme.
@@ -41,29 +41,10 @@
         cargo = pkgs.rust-bin.stable.latest.minimal;
         rustc = pkgs.rust-bin.stable.latest.minimal;
       };
-
-      # Zola is outdated in nixpkgs, build it ourself.
-      zola = pkgs.zola.override (old: {
-        rustPlatform =
-          old.rustPlatform
-          // {
-            buildRustPackage = args:
-              rustPlatform.buildRustPackage (args
-                // {
-                  version = "0.19.1";
-                  src = builtins.fetchGit {
-                    url = "https://github.com/getzola/zola";
-                    ref = "refs/tags/v0.19.1";
-                    rev = "041da029eedbca30c195bc9cd8c1acf89b4f60c0";
-                  };
-                  cargoHash = "sha256-Q2Zx00Gf89TJcsOFqkq0b4e96clv/CLQE51gGONZZl0=";
-                });
-          };
-      });
     in {
       packages = {
         # `nix run .#serve`
-        serve = pkgs.writeShellScriptBin "serve" "${zola}/bin/zola serve --drafts";
+        serve = pkgs.writeShellScriptBin "serve" "${pkgs.zola}/bin/zola serve --drafts";
 
         # `nix build .#website`
         website = pkgs.stdenv.mkDerivation {
@@ -92,7 +73,7 @@
             sed -i '/\[extra\]/a version = "${version}"' config.toml
 
             echo 'building website...'
-            ${zola}/bin/zola build
+            ${pkgs.zola}/bin/zola build
 
             echo 'formatting output...'
             ${pkgs.nodePackages_latest.prettier}/bin/prettier --bracket-same-line true --write public
@@ -107,7 +88,6 @@
       # `nix develop`
       devShell = pkgs.mkShell {
         buildInputs = [
-          zola
           self.formatter.${system}
         ];
         shellHook = ''
