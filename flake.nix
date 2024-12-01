@@ -3,7 +3,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11"; # Nix package repository
     utils.url = "github:numtide/flake-utils"; # Flake utility functions
-    rust-overlay.url = "github:oxalica/rust-overlay";
     # Zola theme.
     zola-theme = {
       url = "github:opeik/zola-theme-terminimal";
@@ -16,13 +15,9 @@
     nixpkgs,
     utils,
     zola-theme,
-    rust-overlay,
   }:
     utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = [(import rust-overlay)];
-      };
+      pkgs = nixpkgs.legacyPackages.${system};
 
       # Our zola theme!
       theme = {
@@ -35,11 +30,6 @@
             cp --verbose --recursive . $out/themes/${theme.name}
           '';
         };
-      };
-
-      rustPlatform = pkgs.makeRustPlatform {
-        cargo = pkgs.rust-bin.stable.latest.minimal;
-        rustc = pkgs.rust-bin.stable.latest.minimal;
       };
     in {
       packages = {
@@ -89,7 +79,9 @@
       devShell = pkgs.mkShell {
         buildInputs = [
           self.formatter.${system}
+          pkgs.zola
         ];
+
         shellHook = ''
           mkdir --parents themes
           # ln --symbolic --force --no-dereference ${theme.src} themes/${theme.name}

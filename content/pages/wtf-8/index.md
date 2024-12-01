@@ -7,7 +7,6 @@ path = "wtf-8"
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
 the problem by refusing Unicode:
 
-
 ## [Mouser](https://au.mouser.com)
 ### 2024-12-01
 

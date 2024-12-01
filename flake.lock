@@ -16,46 +16,11 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1728538411,
-        "narHash": "sha256-f0SBJz1eZ2yOuKUr5CA9BHULGXVSn6miBuUWdTyhUhU=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b69de56fac8c2b6f8fd27f2eca01dcda8e0a4221",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
-        "rust-overlay": "rust-overlay",
         "utils": "utils",
         "zola-theme": "zola-theme"
-      }
-    },
-    "rust-overlay": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1733020719,
-        "narHash": "sha256-Chv9+3zrf1DhdB9JyskjoV0vJbCQEgkVqrU3p4RPLv8=",
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "rev": "8e18f10703112e6c33e1c0d8b93e8305f6f0a75c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oxalica",
-        "repo": "rust-overlay",
-        "type": "github"
       }
     },
     "systems": {
@@ -94,11 +59,11 @@
     "zola-theme": {
       "flake": false,
       "locked": {
-        "lastModified": 1733043471,
-        "narHash": "sha256-lFUZ3I7RpTQqGMDbBFGJLc5sbLED18d0KjjiRNTLoLg=",
+        "lastModified": 1733044541,
+        "narHash": "sha256-wyS8HZwBXXHU7VXmuXYAyGOSaP8iZG/yqGafaZASLPE=",
         "owner": "opeik",
         "repo": "zola-theme-terminimal",
-        "rev": "07c7b00e88adc032e7e63a1662d1d358d7321024",
+        "rev": "1e85b5b4a2ed1b879a0451267843d07b6b621b98",
         "type": "github"
       },
       "original": {
