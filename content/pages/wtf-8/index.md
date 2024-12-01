@@ -1,7 +1,6 @@
 +++
 title = "wtf-8"
 description = "unicode wall of shame"
-path = "wtf-8"
 +++
 
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to

@@ -43,8 +43,8 @@ menu_items = [
     { name = "blog", url = "$BASE_URL" },
     { name = "tags", url = "$BASE_URL/tags" },
     { name = "archive", url = "$BASE_URL/archive" },
-    { name = "wtf-8", url = "$BASE_URL/wtf-8" },
     { name = "about", url = "$BASE_URL/about" },
+    { name = "wtf-8", url = "$BASE_URL/pages/wtf-8" },
 ]
 
 [extra.utterances]
