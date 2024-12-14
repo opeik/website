@@ -6,6 +6,11 @@ description = "unicode wall of shame"
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
 the problem by refusing Unicode:
 
+## [Royal Life Saving](https://www.rslwa.org.au/)
+### 2024-12-01
+
+{{ figure(src="rsl.png", caption="We have detected unusual activity, please try again or contact us for support.") }}
+
 ## [Discord](https://discord.com)
 ### 2024-12-01
 
