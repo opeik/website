@@ -7,7 +7,7 @@ Systematically enforced racism is bad, actually! Here's a list of organizations 
 the problem by refusing Unicode:
 
 ## [Royal Life Saving](https://www.rslwa.org.au/)
-### 2024-12-01
+### 2024-12-07
 
 {{ figure(src="rsl.png", caption="We have detected unusual activity, please try again or contact us for support.") }}
 
