@@ -4,7 +4,12 @@ description = "unicode wall of shame"
 +++
 
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
-the problem by refusing Unicode:
+the problem by degrading or refusing service in response to Unicode.
+
+## [Discord](https://discord.com)
+### 2024-12-24
+
+{{ figure(src="discord-2.png", caption="String value did not match validation regex.") }}
 
 ## [Royal Life Saving](https://www.rslwa.org.au/)
 ### 2024-12-07
