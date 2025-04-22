@@ -6,6 +6,11 @@ description = "unicode wall of shame"
 Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
 the problem by degrading or refusing service in response to Unicode.
 
+## [Water Corporation](https://www.watercorporation.com.au/)
+### 2025-04-16
+
+{{ figure(src="water-corp.png", caption="Hmm, that doesn't look like your name.") }}
+
 ## [Discord](https://discord.com)
 ### 2024-12-24
 
