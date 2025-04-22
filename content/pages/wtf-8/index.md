@@ -1,5 +1,6 @@
 +++
 title = "wtf-8"
+path = "wtf-8"
 description = "unicode wall of shame"
 +++
 
