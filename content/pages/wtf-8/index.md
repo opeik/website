@@ -3,9 +3,6 @@ title = "wtf-8"
 description = "unicode wall of shame"
 +++
 
-Systematically enforced racism is bad, actually! Here's a list of organizations contributing to
-the problem by degrading or refusing service in response to Unicode.
-
 ## [Water Corporation](https://www.watercorporation.com.au/)
 ### 2025-04-16
 
